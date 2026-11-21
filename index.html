@@ -141,48 +141,6 @@ function getFiredScene(){
   return '<div class="firedScene">'
     + '<div class="bossBubble">😡 BOSS: MAG RE-TRAIN KA! BUHAY ANG HAWAK MO TAPOS GANYAN ASSESSMENT MO! YOU\'RE FIRED! 🔥</div>'
     + '<div class="patientBubble">😭 PASYENTE: KAKASUHAN KITA! DI KA MARUNONG! ⚖️</div>'
-    + '<div class="erBubble">🥺 ER: ARAM MO BOSS, SORRY NA... PATAWAD NA, 5%;font-size:24px;animation:moneyFly2 1.4s infinite;z-index:15}
-@keyframes moneyFly2{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(70px,10px) rotate(-20deg);opacity:.8}}
-.bossBubble2{position:absolute;top:6px;left:50%;transform:translateX(-50%);background:white;border:3px solid #0A2A7A;border-radius:12px;padding:6px 9px;font-weight:900;font-size:11px;z-index:20;width:94%;line-height:1.3}
-.patientBubble2{position:absolute;top:72px;left:50%;transform:translateX(-50%);background:#FFE600;border:3px solid #0A2A7A;border-radius:12px;padding:6px 9px;font-weight:900;font-size:12px;z-index:20;width:88%;animation:patientShout .6s infinite;line-height:1.3}
-.erBubble2{position:absolute;top:132px;left:50%;transform:translateX(-50%);background:#B3E5FC;border:3px solid #0A2A7A;border-radius:12px;padding:7px 9px;font-weight:900;font-size:12px;z-index:20;width:88%;animation:erBegBubble .8s infinite;line-height:1.3}
-</style>
-</head>
-<body>
-<div id="top"><h1>MDRRMO BASUD<br><span>🚨 ER RESPONSE GAME</span></h1><p>3 LIVES LANG! MALI = -100, -1 LIFE, PROCEED AGAD!</p><p>Developed by: Mharvin Raña</p></div>
-<div id="hud"><div>📞 <span id="callNum">0</span>/10</div><div>⭐ <span id="score">0</span></div><div>❤️ <span id="livesDisplay">❤️❤️❤️</span></div><div>⏱️ <span id="timerText">30s</span></div></div>
-<div id="stage"></div>
-<script>
-var audioCtx=null;
-function unlock(){ if(!audioCtx){ try{audioCtx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){} } if(audioCtx&&audioCtx.state=="suspended") audioCtx.resume(); }
-document.addEventListener("click",unlock);
-function beep(f,d,t,v,w){ if(!audioCtx) return; var o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type=t||"triangle"; o.frequency.value=f; var tt=audioCtx.currentTime+(w||0); g.gain.setValueAtTime(v||.25,tt); g.gain.exponentialRampToValueAtTime(.001,tt+d); o.start(tt); o.stop(tt+d); }
-function playRing(){ for(var i=0;i<3;i++){ beep(800,.3,"square",.2,i*.6); } }
-function playSiren(){ for(var i=0;i<3;i++){ beep(700,.4,"sawtooth",.15,i*.8); beep(950,.4,"sawtooth",.15,i*.8+.4); } }
-function playGood(){ [523,659,784].forEach(function(n,i){ beep(n,.3,"triangle",.3,i*.15); }); }
-function playBad(){ beep(200,.5,"sawtooth",.25,0); beep(150,.5,"sawtooth",.25,.2); }
-function playTick(){ beep(1000,.08,"square",.15,0); }
-function playFired(){ [400,300,200,100].forEach(function(n,i){ beep(n,.6,"sawtooth",.3,i*.4); }); }
-function playWin(){ [523,659,784,1046].forEach(function(n,i){ beep(n,.4,"triangle",.3,i*.15); }); }
-
-function getSceneHTML(c){
-  if(c.id=="SNAKE BITE") return '<div class="scene"><div class="sceneLabel">🐍 SNAKE BITE - '+c.loc+'</div><div class="painText">AAAH! 😫</div><div class="patient"><div class="head"><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div><div class="body"><span>ER - '+erName+'</span></div><div style="position:relative;height:50px"><div class="leg" style="left:20px"></div><div class="leg" style="left:58px;background:#FF6B6B"><div class="swelling" style="bottom:0;left:-5px"></div></div></div></div><div class="snake">🐍</div><div style="position:absolute;bottom:4px;left:10px;background:rgba(255,255,255,.9);padding:2px 8px;border-radius:8px;font-size:11px;font-weight:900">🦶 '+c.scenTitle+'</div></div>';
-  if(c.id=="VEHICULAR - BALI HITA") return '<div class="scene"><div class="sceneLabel">🏍️ VEHICULAR TRAUMA - '+c.loc+'</div><div class="painText">ARAY! 💥</div><div class="patient"><div class="head"><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div><div class="body"><span>🏍️ RIDER</span></div><div style="position:relative;height:55px"><div class="leg broken" style="left:18px;height:60px;transform:rotate(25deg)"><div style="position:absolute;top:20px;left:-8px;background:#FF0000;color:white;font-size:10px;padding:1px 4px;border-radius:5px">BALI!</div><div class="blood" style="top:18px;left:5px"></div></div><div class="leg" style="left:62px"></div></div></div><div class="motor">🏍️💥</div><div style="position:absolute;bottom:4px;left:10px;background:#FF0000;color:white;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:900">🦵 '+c.scenTitle+'</div></div>';
-  if(c.id=="DROWNING") return '<div class="scene" style="background:linear-gradient(#87CEEB 0 40%, #0066CC 40% 100%)"><div class="sceneLabel">🌊 DROWNING - '+c.loc+'</div><div class="water"></div><div class="patient" style="bottom:32px"><div class="head" style="animation:none;transform:rotate(15deg)"><div class="eye l" style="animation:none;transform:scaleY(.1)"></div><div class="eye r" style="animation:none;transform:scaleY(.1)"></div><div class="mouth" style="animation:none;height:4px"></div></div><div class="body" style="animation:none;background:#555"><span>😶 '+c.scenTitle+'</span></div></div><div style="position:absolute;top:35px;right:8px;background:#000;color:white;padding:3px 7px;border-radius:8px;font-size:11px;font-weight:900">WATER EMERGENCY!</div></div>';
-  if(c.id=="HEART ATTACK") return '<div class="scene"><div class="sceneLabel">❤️ CARDIAC / ACS - '+c.loc+'</div><div class="heart">❤️</div><div class="painText">DIBDIB KO! 😖</div><div class="patient"><div class="head"><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div><div class="body"><span>🤲 '+c.scenTitle+'</span></div><div style="position:relative;height:45px"><div class="leg" style="left:20px"></div><div class="leg" style="left:58px"></div></div></div></div>';
-  if(c.id=="FALL - BUBONG") return '<div class="scene"><div class="sceneLabel">🏠 FALL TRAUMA - '+c.loc+'</div><div class="painText">ARAY! 😫</div><div class="patient"><div class="head"><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div><div class="body" style="background:#FF6A00"><span>⚠️ SPINAL CARE</span></div><div style="position:relative;height:45px"><div class="leg" style="left:20px;animation:none;opacity:.6"></div><div class="leg" style="left:58px;animation:none;opacity:.6"></div></div></div><div style="position:absolute;bottom:4px;left:10px;background:#FF1744;color:white;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:900">🦴 '+c.scenTitle+'</div></div>';
-  if(c.id=="BURN") return '<div class="scene"><div class="sceneLabel">🔥 BURN - '+c.loc+'</div><div class="smoke">💨</div><div class="fire">🔥</div><div class="painText">MAINIT! 😭</div><div class="patient"><div class="head" style="background:#FF9999"><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div><div class="body"><span>🔥 '+c.scenTitle+'</span></div><div style="position:relative;height:45px"><div class="leg" style="left:20px"></div><div class="leg" style="left:58px;background:#FF6B6B"></div></div></div></div>';
-  if(c.id=="CHOKING") return '<div class="scene"><div class="sceneLabel">🫁 AIRWAY OBSTRUCTION - '+c.loc+'</div><div class="painText">HINDI MAKAHINGA! 😰</div><div class="patient"><div class="head" style="background:#FFB6C1"><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div><div class="body" style="background:#D32F2F"><span>🫁 CHOKING</span></div><div style="position:relative;height:45px"><div class="leg" style="left:20px"></div><div class="leg" style="left:58px"></div></div></div><div style="position:absolute;bottom:4px;left:10px;background:#000;color:#FFE600;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:900">⚠️ '+c.scenTitle+'</div></div>';
-  if(c.id=="ELECTROCUTION") return '<div class="scene"><div class="sceneLabel">⚡ ELECTRICAL EMERGENCY - '+c.loc+'</div><div class="painText">ZAP! ⚡</div><div class="patient"><div class="head" style="background:#FFF59D"><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div><div class="body" style="background:#F57C00"><span>⚡ SHOCK</span></div><div style="position:relative;height:45px"><div class="leg" style="left:20px"></div><div class="leg" style="left:58px"></div></div></div><div style="position:absolute;bottom:4px;left:10px;background:#FF1744;color:white;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:900">⚡ '+c.scenTitle+'</div></div>';
-  if(c.id=="STROKE") return '<div class="scene"><div class="sceneLabel">🧠 NEURO / STROKE - '+c.loc+'</div><div class="painText">FAST CHECK! 🧠</div><div class="patient"><div class="head"><div class="eye l"></div><div class="eye r" style="transform:scaleY(.5)"></div><div class="mouth" style="transform:translateX(-40%) skewX(-12deg)"></div></div><div class="body" style="background:#5E35B1"><span>🧠 NEURO</span></div><div style="position:relative;height:45px"><div class="leg" style="left:20px"></div><div class="leg" style="left:58px"></div></div></div><div style="position:absolute;bottom:4px;left:10px;background:#0A2A7A;color:white;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:900">🧠 '+c.scenTitle+'</div></div>';
-  if(c.id=="SEVERE BLEEDING") return '<div class="scene"><div class="sceneLabel">🩸 HEMORRHAGE - '+c.loc+'</div><div class="painText">DUMUDUGO! 🩸</div><div class="patient"><div class="head" style="background:#FFCDD2"><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div><div class="body" style="background:#B71C1C"><span>🩸 BLEEDING</span><div class="blood" style="top:12px;right:8px"></div></div><div style="position:relative;height:45px"><div class="leg" style="left:20px"></div><div class="leg" style="left:58px"></div></div></div><div style="position:absolute;bottom:4px;left:10px;background:#FF0000;color:white;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:900">🩸 '+c.scenTitle+'</div></div>';
-  return '';
-}
-
-function getFiredScene(){
-  return '<div class="firedScene">'
-    + '<div class="bossBubble">😡 BOSS: MAG RE-TRAIN KA! BUHAY ANG HAWAK MO TAPOS GANYAN ASSESSMENT MO! YOU\'RE FIRED! 🔥</div>'
-    + '<div class="patientBubble">😭 PASYENTE: KAKASUHAN KITA! DI KA MARUNONG! ⚖️</div>'
     + '<div class="erBubble">🥺 ER: ARAM MO BOSS, SORRY NA... PATAWAD NA, DAI KO NA UULITON! 😭🙏</div>'
     + '<div class="bossChar"><div class="bossHead"><div class="eye l"></div><div class="eye r"></div><div class="bossMouth"></div></div><div style="width:75px;height:55px;background:#FF1744;border-radius:10px;color:white;font-size:11px;font-weight:900;line-height:55px">👔 BOSS</div><div style="background:#FF1744;color:white;font-size:11px;font-weight:900;padding:2px;border-radius:8px;margin-top:2px">😡 GALIT!</div></div>'
     + '<div class="patientChar"><div class="head" style="background:#FFCCCC"><div class="eye l"></div><div class="eye r"></div><div class="mouth" style="animation:none;height:4px"></div><div class="tear" style="left:11px"></div><div class="tear" style="right:11px"></div></div><div style="width:65px;height:50px;background:#999;border-radius:10px;color:white;font-size:11px;font-weight:900;line-height:50px">😭 PASYENTE</div><div style="background:#FF6A00;color:white;font-size:11px;font-weight:900;padding:2px;border-radius:8px;margin-top:2px">⚖️ KAKASUHAN KA!</div></div>'
@@ -201,7 +159,7 @@ function getSuccessScene(){
 }
 
 // =========================================================================
-// 10 CASES x 3 SCENARIOS x 3 QUESTIONS = 90 QUESTIONS (OPTION B: RANDOM SCENARIO)
+// 10 CASES x 3 SCENARIOS x 3 QUESTIONS = 90 QUESTIONS (BALANCED CHOICES)
 // =========================================================================
 var cases = [
 // -------------------- CASE 1: VEHICULAR - BALI HITA --------------------
@@ -214,13 +172,28 @@ var cases = [
       story:"Nabangga yung motor sa truck! Yung rider, nabalian ng hita! Nakahandusay, dumudugo, sumisigaw sa sakit! Yung hita nya, baluktot!",
       vitals:{airway:"Bukas, sumisigaw", breathing:"24/min - Mabilis, masakit", pulse:"115 - Mabilis", bp:"110/70", spo2:"96%", conscious:"GCS 15 - Gising, sumisigaw", wound:"Bali sa kanang hita (femur), deformity, dumudugo, pamamaga, paa nanginginig"},
       q1:"PRIMARY: Bali hita, deformity, dumudugo, sumisigaw. Ano uunahin mo?",
-      q1Opts:["A. I-straight agad yung hita para bumalik sa normal - hilahin mo para maayos","B. I-assess ABC + i-control yung pagdurugo gamit direct pressure, i-check kung may ibang injury, i-immobilize yung hita ng hindi ginagalaw yung bali","C. Buhatin agad at isakay sa ambulance kahit hindi naka-splint","D. Lagyan agad ng yelo yung bali at hintayin mawala sakit"],
-      q1Ans:1, q1Explain:"TAMA! Hindi mo pwedeng hilahin o i-straight yung bali! Baka maputol ugat at lalong dumugo. ABC + bleeding control + immobilize ng hindi ginagalaw.",
+      q1Opts:[
+        "A. I-straight muna ang hita habang naka-traction para mabawasan ang deformity bago i-check ang pulse",
+        "B. I-assess ang ABC, kontrolin ang bleeding gamit direct pressure, i-check ibang injury, at i-immobilize ang bali nang hindi pinipilit i-straight",
+        "C. Isakay agad sa ambulansya nang nakaupo sa stretcher para ma-splint sa biyahe at hindi matagalan sa daan",
+        "D. Lagyan ng cold compress sa baluktot na hita at hintayin humupa ang sakit bago galawin ang binti"
+      ],
+      q1Ans:1, q1Explain:"TAMA! Hindi mo pwedeng hilahin o i-straight yung bali! Baka maputol ugat at lalong dumugo. ABC + bleeding control + immobilize nang hindi ginagalaw.",
       q2:"INTERVENTION: Paano mo i-splint yung bali na hita?",
-      q2Opts:["A. Lagyan ng splint na mahaba - mula kili-kili hanggang paa, i-secure sa itaas at ibaba ng bali, huwag idiin sa mismong bali, i-check pulse sa paa bago at pagkatapos mag-splint","B. Balutan lang ng bandage yung mismong bali ng mahigpit para hindi gumalaw","C. Lagyan ng splint na maiksi lang - yung bali lang yung takpan","D. Huwag na lagyan ng splint, buhatin na lang ng maingat"],
-      q2Ans:0, q2Explain:"TAMA! Sa femur fracture, kailangan long splint - kili-kili hanggang paa. I-check pulse sa paa bago at pagkatapos!",
+      q2Opts:[
+        "A. Gumamit ng long splint mula kili-kili hanggang paa, itali sa itaas at ibaba ng bali, at i-check ang pulse sa paa bago at pagkatapos",
+        "B. Balutan ng mahigpit na elastic bandage ang mismong bali upang mapigilan ang galaw ng buto at pamamaga",
+        "C. Maglagay ng maikling padded splint sa tapat ng hita lang upang hindi mabigat dalhin sa ambulansya",
+        "D. Huwag nang lagyan ng splint at suportahan na lang ng dalawang responder habang inililipat sa stretcher"
+      ],
+      q2Ans:0, q2Explain:"TAMA! Sa femur fracture, kailangan long splint—kili-kili hanggang paa. I-check pulse sa paa bago at pagkatapos!",
       q3:"TRANSPORT: Sumisigaw pa rin sa sakit, BP 110/70, pulse 115. Ano transport decision mo?",
-      q3Opts:["A. Dalhin agad sa ospital, i-monitor vitals, i-immobilize ng maayos, huwag bigyan ng gamot na hindi authorized, i-reassure pasyente","B. Bigyan ng painkiller na dala mo kahit walang order para tumigil kaka-sigaw","C. Hintayin muna mawala sakit bago dalhin","D. Dalhin pero patayuin muna para ma-check kung makalakad"],
+      q3Opts:[
+        "A. Dalhin agad sa ospital, i-monitor vitals, panatilihing naka-splint at panatag ang pasyente nang walang unauthorized meds",
+        "B. Bigyan ng dala ninyong analgesic tablet para kumalma ang pasyente at bumaba ang bilis ng kanyang pulso",
+        "C. Maghintay ng ilang minuto sa scene kung bababa ang sakit kapag na-reposition ang binti sa komportableng anggulo",
+        "D. Subukang patayuin nang bahagya habang may alalay upang masuri kung kaya pang suportahan ng binti ang bigat"
+      ],
       q3Ans:0, q3Explain:"TAMA! Immobilization + reassurance + mabilis na transport ang pain relief mo sa field."
     },
     {
@@ -229,13 +202,28 @@ var cases = [
       story:"Sumemplang yung habal-habal sa kurbada! Yung passenger, may nakalabas na buto sa hita at malakas ang dugo!",
       vitals:{airway:"Bukas, umiiyak", breathing:"26/min - Mabilis", pulse:"124 - Mabilis, mahina", bp:"95/60 - Bumababa", spo2:"94%", conscious:"GCS 15 - Pale, pawisan", wound:"Open femur fracture sa kaliwang hita, may nakalitaw na buto, active bleeding"},
       q1:"PRIMARY: Open fracture na may nakalitaw na buto at malakas na dugo. Ano gagawin mo sa buto?",
-      q1Opts:["A. Itulak pabalik sa loob yung buto para hindi ma-infect","B. Huwag itulak pabalik ang buto! I-control ang bleeding sa paligid gamit sterile dressing, takpan ang nakalitaw na buto ng moist sterile gauze, at mag-treat for shock","C. Hugasan ng alcohol yung nakalitaw na buto","D. Hilahin ang paa para pumasok kusa ang buto"],
+      q1Opts:[
+        "A. Dahan-dahang itulak pabalik ang nakalitaw na buto upang mabawasan ang exposure sa bacteria at mapahinto ang dugo",
+        "B. Huwag itulak pabalik ang buto; kontrolin ang bleeding sa paligid gamit sterile dressing, takpan ng moist sterile gauze, at i-manage ang shock",
+        "C. Buhusan ng antiseptic solution ang nakalitaw na buto at hilahin nang bahagya ang paa upang pumantay ang haba",
+        "D. Ibalot nang mahigpit ang nakalitaw na buto gamit tuyong gasa upang maitulak ito pabalik sa loob ng sugat"
+      ],
       q1Ans:1, q1Explain:"TAMA! Never push exposed bone back in! Magdadala ka ng bacteria sa loob at pwede makasira ng ugat. Cover with sterile dressing at control bleeding.",
       q2:"CIRCULATION: BP 95/60, pulse 124, maputla at malamig pawis. Anong nangyayari?",
-      q2Opts:["A. Kinakabahan lang yan, bigyan ng malamig na tubig","B. Hypovolemic shock dahil sa blood loss - ihiga ng flat (supine) sa spine board, panatilihing mainit (blanket), bigyan ng high-flow oxygen, at rapid transport","C. Paupuin ng mataas para bumaba BP","D. Painumin ng kape para tumaas BP"],
-      q2Ans:1, q2Explain:"TAMA! Femur fracture ay pwedeng mag-cause ng 1 to 1.5 liters internal + external blood loss. Early shock management + rapid transport!",
+      q2Opts:[
+        "A. Stress response lang sa aksidente kaya bigyan ng malamig na tubig upang mahimasmasan at bumalik ang kulay",
+        "B. Hypovolemic shock dahil sa blood loss—ihiga nang flat sa spine board, bigyan ng kumot at high-flow oxygen, at rapid transport",
+        "C. Paupuin nang semi-upright upang mas madaling makahinga at mabawasan ang pressure sa nasugatang hita",
+        "D. Painumin ng mainit na kape upang pasiglahin ang sirkulasyon at maiwasan ang pagkahilo habang binubuhat"
+      ],
+      q2Ans:1, q2Explain:"TAMA! Femur fracture ay pwedeng mag-cause ng malaking blood loss. Early shock management + rapid transport!",
       q3:"CMS CHECK: Pagkatapos mag-splint, napansin mong namumutla ang daliri sa paa at walang pedal pulse. Ano gagawin?",
-      q3Opts:["A. Hayaan na lang, malapit na naman sa ospital","B. Luwagan agad ang splint straps at i-reassess ang pulse/circulation sa paa, pagkatapos i-resecure nang hindi masyadong mahigpit","C. Dagdagan pa ng mas mahigpit na bandage","D. Lagyan ng hot compress ang paa"],
+      q3Opts:[
+        "A. Ipagpatuloy ang biyahe dahil normal na bumagal ang daloy ng dugo sa paa kapag naka-immobilize ang hita",
+        "B. Luwagan agad ang splint straps at i-reassess ang pulse at circulation sa paa bago i-secure nang hindi masyadong mahigpit",
+        "C. Dagdagan ng isa pang bandage sa ibabaw ng splint upang mas matatag ang pagkakahawak ng buto sa loob",
+        "D. Maglagay ng warm pack sa talampakan upang pasiglahin ang daloy ng dugo nang hindi binubuksan ang splint"
+      ],
       q3Ans:1, q3Explain:"TAMA! Kapag nawala ang distal pulse pagkatapos mag-splint, masyadong mahigpit ang pagkakatali—luwagan agad para hindi mamatay ang tissue!"
     },
     {
@@ -244,13 +232,28 @@ var cases = [
       story:"Nabangga ng van ang tricycle! Yung driver naipit ang hita sa ilalim ng yupi-yuping bakal, tumatagas pa ang gasolina sa kalsada!",
       vitals:{airway:"Bukas, humihingi ng tulong", breathing:"24/min", pulse:"118", bp:"115/75", spo2:"95%", conscious:"GCS 15 - Alerto", wound:"Deformed left thigh, naipit sa bakal, may gas leak sa paligid"},
       q1:"SCENE SIZE-UP: May tumatagas na gasolina sa kalsada habang nakaipit ang biktima. Ano ang PINAKAUNANG hakbang?",
-      q1Opts:["A. Tumakbo agad sa biktima at hilahin palabas kahit nakaipit","B. Scene safety muna! I-secure ang perimeter, patayin ang ignition ng sasakyan, i-deploy fire extinguisher / bawal ang spark o sigarilyo bago lumapit","C. Kunin muna ang cellphone at mag-live video","D. Gumamit ng metal crowbar na nag-i-spark para buksan ang pinto"],
+      q1Opts:[
+        "A. Lumapit agad sa driver at hilahin palabas ang kanyang hita bago pa umabot sa gilid ang tumatagas na gasolina",
+        "B. Unahin ang scene safety—i-secure ang lugar, patayin ang ignition, iwasan ang spark o apoy, at kontrolin ang hazard bago lumapit",
+        "C. Gumamit ng metal crowbar upang iangat ang yupi na bakal habang naka-on pa ang makina para mabilis mailabas",
+        "D. Kumuha muna ng detalye at litrato ng posisyon ng sasakyan bago patayin ang makina para may dokumentasyon"
+      ],
       q1Ans:1, q1Explain:"TAMA! Scene safety first! Kapag sumabog ang gasolina, pati ikaw magiging biktima. Secure hazard bago mag-extrication.",
       q2:"EXTRICATION: Ligtas na ang paligid. Paano ilalabas ang biktima na may suspected femur at pelvic/spinal trauma?",
-      q2Opts:["A. Hilahin sa dalawang kamay palabas ng mabilis","B. Panatilihin ang C-spine stabilization, i-stabilize ang sasakyan, gumamit ng tamang extrication technique at spine board bago tuluyang ilipat","C. Palabasin mag-isa gamit ang saklay","D. Buhatin sa kili-kili at tuhod"],
+      q2Opts:[
+        "A. Hilahin nang mabilis sa magkabilang braso palabas ng sasakyan upang maiwasan ang paglala ng pagkabigla ng biktima",
+        "B. Panatilihin ang C-spine stabilization, i-stabilize ang sasakyan, at gumamit ng tamang extrication at spine board bago ilipat",
+        "C. Tulungan tumayo at umikot palabas ng sasakyan habang inaalalayan ang bali niyang hita upang hindi maipit ang likod",
+        "D. Buhatin sa kili-kili at ilalim ng tuhod nang hindi gumagamit ng board upang mas mabilis mailabas sa masikip na espasyo"
+      ],
       q2Ans:1, q2Explain:"TAMA! Sa vehicular crash na malakas ang impact, laging i-suspect ang spinal injury kasabay ng femur fracture.",
       q3:"REASSESSMENT: Habang nasa ambulansya, biglang naging antukin at bumagal ang sagot ng pasyente. Ano ang priority?",
-      q3Opts:["A. Hayaan matulog para makapagpahinga","B. I-reassess agad ang ABCs, level of consciousness (AVPU/GCS), vitals, at i-notify ang receiving hospital sa pagbabago ng status","C. Tapikin nang malakas sa pisngi para magising","D. Tanggalin ang oxygen mask"],
+      q3Opts:[
+        "A. Hayaan muna siyang matulog nang tahimik upang makabawi ng lakas bago dumating sa emergency room",
+        "B. I-reassess agad ang ABCs, mental status (GCS/AVPU), at vitals, at i-update ang receiving hospital sa pagbabago",
+        "C. Tapikin nang malakas ang mukha at pasigawan upang mapanatiling gising habang tinatapos ang vitals check",
+        "D. Tanggalin ang oxygen mask upang masuri kung kusang babalik ang kanyang sigla nang walang supplemental air"
+      ],
       q3Ans:1, q3Explain:"TAMA! Ang pagbabago sa mental status (from alert to drowsy) ay senyales ng lumalalang shock o head injury. Reassess ABCs immediately!"
     }
   ]
@@ -266,13 +269,28 @@ var cases = [
       story:"Kinagat ng ahas yung anak ko sa paa habang naglalakad sa palayan! Hindi namin nakita yung ahas, pero 2 butas yung kagat, namamaga na, masakit na masakit!",
       vitals:{airway:"Bukas, nagsasalita", breathing:"22/min - Mabilis, kinakabahan", pulse:"112 - Mabilis", bp:"130/80", spo2:"98%", conscious:"GCS 15 - Gising, takot, sumisigaw sa sakit", wound:"2 puncture wounds sa kaliwang paa, pamamaga 5cm, walang pagdurugo"},
       q1:"PRIMARY SURVEY: Ano ang pinaka-critical na i-assess muna? Yung pasyente, gising at nagsasalita, pero namamaga na paa.",
-      q1Opts:["A. I-assess kung anong klaseng ahas at hanapin yung ahas para madala sa ospital","B. I-assess yung ABC - Airway, Breathing, Circulation - at i-check kung may signs ng systemic envenomation (pamamaga na kumakalat, pagdurugo ng gilagid, paglabo ng mata)","C. Hugasan agad yung sugat ng malakas na tubig at sabon para matanggal kamandag","D. Lagyan agad ng ice pack yung paa para hindi kumalat yung kamandag"],
+      q1Opts:[
+        "A. Hanapin muna ang ahas sa palayan upang matukoy kung venomous ito bago simulan ang pag-assess sa pasyente",
+        "B. I-assess ang ABC at bantayan ang systemic envenomation signs gaya ng kumakalat na pamamaga, pagdurugo, o paglabo ng mata",
+        "C. Hugasan nang matagal gamit ang malakas na agos ng tubig at sabon upang mahugasan palabas ang venom sa sugat",
+        "D. Lagyan agad ng yelo ang paa upang mapigilan ang pag-akyat ng venom patungo sa binti at katawan"
+      ],
       q1Ans:1, q1Explain:"TAMA! Kahit gising sya, kailangan mo pa rin i-ABC at bantayan ang systemic signs. Yung paghahanap ng ahas, delikado at sayang sa oras.",
       q2:"INTERVENTION: Paano mo i-immobilize yung paa? Dito nagkakamali karamihan.",
-      q2Opts:["A. Pressure Immobilization Technique - balutan ng elastic bandage mula paa pataas na mahigpit, tapos i-splint","B. Immobilize lang gamit splint, keep yung paa sa heart level, huwag galawin, huwag balutan ng mahigpit, alisin relo/sapatos bago mamaga lalo","C. Itaas yung paa above heart level para hindi bumaba yung kamandag sa puso","D. Ibaba yung paa below heart level at lagyan ng tourniquet"],
+      q2Opts:[
+        "A. Balutan nang mahigpit gamit ang elastic bandage mula paa pataas at lagyan ng splint upang ma-trap ang venom",
+        "B. I-immobilize gamit splint sa heart level, huwag galawin o balutan nang mahigpit, at alisin ang relo/sapatos bago mamaga",
+        "C. Itaas ang paa nang mas mataas sa dibdib upang hindi bumaba ang daloy ng venom patungo sa gitna ng katawan",
+        "D. Ibaba ang paa sa ibaba ng antas ng katawan at lagyan ng maluwag na tali sa itaas ng bukung-bukong"
+      ],
       q2Ans:1, q2Explain:"TAMA! Sa Pilipinas, HINDI recommended ang Pressure Immobilization o tourniquet para sa local venomous snakes—splint lang at keep at heart level.",
       q3:"TRANSPORT DECISION: Anong ospital at paano mo dadalhin?",
-      q3Opts:["A. Dalhin sa pinakamalapit na clinic, hintayin muna 1 oras kung mawawala pamamaga","B. Dalhin agad sa ospital na may anti-venom, i-monitor vitals every 5 mins, markahan yung hangganan ng pamamaga ng ballpen para makita kung kumakalat, huwag painumin ng gamot na hindi prescribed","C. Painumin ng paracetamol at antihistamine bago bumiyahe","D. Hayaan maglakad yung pasyente papunta sa ambulance para mabilis"],
+      q3Opts:[
+        "A. Dalhin sa pinakamalapit na clinic at obserbahan muna nang isang oras kung hupa na ang pamamaga sa paa",
+        "B. Dalhin agad sa ospital na may anti-venom, i-monitor vitals bawat 5 mins, markahan ang pamamaga, at huwag painumin ng gamot",
+        "C. Painumin muna ng paracetamol at antihistamine bago bumiyahe upang maibsan ang kirot at pamamaga sa daan",
+        "D. Hayaang maglakad nang dahan-dahan ang pasyente patungo sa ambulansya upang hindi maantala ang pag-alis"
+      ],
       q3Ans:1, q3Explain:"TAMA! Kailangan sa ospital na may anti-venom, markahan ang pamamaga gamit ballpen at oras, at huwag paglakarin para hindi bumilis ang daloy ng venom."
     },
     {
@@ -281,13 +299,28 @@ var cases = [
       story:"Kinagat ng ulupong yung pamangkin ko sa binti! Tinalian namin ng mahigpit na lubid sa taas ng tuhod at hiniwa namin para lumabas ang dugo!",
       vitals:{airway:"Bukas", breathing:"24/min", pulse:"120", bp:"105/70", spo2:"96%", conscious:"GCS 15 - Umiiyak, nanginginig", wound:"2 fang marks sa binti, may hiwa ng kutsilyo na dumudugo, may mahigpit na lubid sa hita, nangingitim na ang paa"},
       q1:"INTERVENTION: Nakita mong may mahigpit na tourniquet (lubid) at nangingitim na ang paa. Ano ang tamang gawin?",
-      q1Opts:["A. Mas higpitan pa ang lubid para siguradong walang kamandag na aakyat","B. Maghanda ng resuscitation equipment, unti-unting luwagan/alisin ang tourniquet pagkatapos i-splint ang paa, i-control ang bleeding sa hiwa gamit light sterile dressing, at dalhin agad sa ospital","C. Sipsipin yung hiwa gamit ang bibig para maubos ang kamandag","D. Lagyan ng bawang at suka ang hiwa"],
-      q1Ans:1, q1Explain:"TAMA! Ang tourniquet sa snake bite ay nakakasira ng tissue (necrosis/amputation) at kapag biglang tinanggal nang walang paghahanda ay pwedeng mag-cause ng sudden venom surge. Splint first, release safely, rapid transport!",
+      q1Opts:[
+        "A. Mas higpitan pa ang lubid sa itaas ng tuhod upang masigurong walang kamandag na makakarating sa hita",
+        "B. Ihanda ang resuscitation gear, luwagan/alisin ang lubid pagkatapos ma-splint, takpan ang hiwa ng sterile dressing, at dalhin agad",
+        "C. Gamitan ng suction pump o bibig ang hiwa upang masipsip palabas ang natitirang venom at dugo",
+        "D. Pahiran ng katas ng bawang at suka ang hiwa upang ma-neutralize ang venom at maiwasan ang impeksyon"
+      ],
+      q1Ans:1, q1Explain:"TAMA! Ang tourniquet sa snake bite ay nakakasira ng tissue at kapag biglang tinanggal nang walang paghahanda ay pwedeng mag-cause ng sudden venom surge.",
       q2:"SYSTEMIC SIGNS: Habang nasa biyahe, napansin mong bumabagsak ang talukap ng mata nya (ptosis) at hirap na syang lumunok. Ano ibig sabihin nito?",
-      q2Opts:["A. Inaantok lang sya dahil napagod","B. Neurotoxic envenomation (hal. Cobra) — bumabagsak na ang respiratory muscles! Ihanda agad ang BVM (Bag-Valve-Mask) at airway management para sa posibleng respiratory arrest","C. Allergy lang sa damo","D. Gutom lang kaya nanghihina"],
+      q2Opts:[
+        "A. Pagod at antok lang ang nararamdaman ng pasyente dahil sa matinding takot at pag-iyak mula pa sa bahay",
+        "B. Neurotoxic envenomation—nanghihina ang respiratory muscles kaya ihanda ang BVM at airway support para sa posibleng arrest",
+        "C. Mild allergic reaction lang sa damo sa paligid ng pinangyarihan at hindi konektado sa kagat ng ahas",
+        "D. Gutom at pagkababa ng energy lang ang dahilan kaya bumabagal ang pagkurap at paglunok ng pasyente"
+      ],
       q2Ans:1, q2Explain:"TAMA! Ang ptosis (drooping eyelids) at difficulty swallowing ay classic signs ng neurotoxic snake bite. Pwedeng huminto ang paghinga anumang oras!",
       q3:"AIRWAY MANAGEMENT: Biglang naging mababaw ang paghinga (8/min) at bumaba ang SpO2 sa 86%. Ano ang gagawin mo?",
-      q3Opts:["A. Hayaan lang basta may pulso pa","B. Magbigay ng assisted ventilation gamit ang BVM (Bag-Valve-Mask) na may 100% oxygen at i-alert ang hospital ER para sa intubation at anti-venom","C. Painumin ng tubig para magising","D. Ihiga nang nakadapa"],
+      q3Opts:[
+        "A. Panatilihin lang ang pagmamasid sa dibdib hangga't may nararamdaman pang pulso sa leeg o pulsohan",
+        "B. Magbigay ng assisted ventilation gamit ang BVM na may 100% oxygen at i-alert ang ER para sa intubation at anti-venom",
+        "C. Painumin ng kaunting tubig upang mabasa ang lalamunan at mapukaw ang kanyang paghinga",
+        "D. Ihiga nang nakadapa nang walang unan upang mas madaling lumabas ang hangin mula sa baga"
+      ],
       q3Ans:1, q3Explain:"TAMA! Sa neurotoxic bite, ventilatory support (BVM) ang nagliligtas ng buhay habang papunta sa anti-venom facility."
     },
     {
@@ -296,13 +329,28 @@ var cases = [
       story:"Naglilinis ng damuhan yung kapatid ko, binugahan ng ahas sa mata! Sobrang hapdi raw at hindi nya maidilat yung mata nya!",
       vitals:{airway:"Bukas, sumisigaw", breathing:"22/min", pulse:"108", bp:"135/85", spo2:"98%", conscious:"GCS 15 - Hawak ang mata, umiiyak", wound:"Pulang-pula ang kanang mata, nagluluha, severe pain, walang kagat sa balat"},
       q1:"FIRST AID: Binugahan ng spitting cobra sa mata. Ano ang PINAKAUNANG dapat gawin sa field?",
-      q1Opts:["A. Patakan ng eye drops o gatas","B. Mag-flush/maghugas agad ng mata gamit ang maraming malinis na tubig o Normal Saline (NSS) nang tuloy-tuloy sa loob ng 15–20 minuto, mula inner corner palabas","C. Kuskusin ang mata ng malinis na panyo","D. Takpan agad ng mahigpit na eye patch nang hindi hinuhugasan"],
+      q1Opts:[
+        "A. Patakan ng soothing eye drops o gatas upang maibsan agad ang pamumula at hapdi ng mata",
+        "B. Mag-flush agad ng mata gamit ang maraming malinis na tubig o NSS nang 15–20 minuto mula inner corner palabas",
+        "C. Dahan-dahang punasan ng malinis na panyo ang talukap upang maalis ang nakadikit na venom sa mata",
+        "D. Takpan agad ng sterile eye pad nang mahigpit upang hindi mairita sa hangin habang papunta sa ospital"
+      ],
       q1Ans:1, q1Explain:"TAMA! Immediate, copious irrigation (15–20 mins) ng malinis na tubig o NSS ang pinaka-critical para matanggal ang venom at maiwasan ang pagkabulag.",
       q2:"TECHNIQUE: Paano ang tamang posisyon habang hinuhugasan ang kanang mata?",
-      q2Opts:["A. Itagilid ang ulo sa KANAN para ang tubig ay dumaloy palabas at hindi mapunta sa malusog na kaliwang mata","B. Itagilid ang ulo sa KALIWA para malinis din ang kabilang mata","C. Nakatingala nang diretso para pumasok sa ilong","D. Nakayuko nang nakapikit"],
+      q2Opts:[
+        "A. Itagilid ang ulo sa KANAN upang dumaloy palabas ang tubig at hindi mapunta sa kaliwang mata",
+        "B. Itagilid ang ulo sa KALIWA upang sabay na mahugasan at malinis ang parehong mata nang pantay",
+        "C. Iangat ang baba at tumingala nang diretso upang dumaloy ang tubig patungo sa ilong at lalamunan",
+        "D. Iyuko nang bahagya ang ulo nang nakapikit upang hindi tumalsik sa mukha ng responder ang tubig"
+      ],
       q2Ans:0, q2Explain:"TAMA! Laging itagilid sa side ng apektadong mata para hindi ma-contaminate ang kabilang mata!",
       q3:"TRANSPORT: Pagkatapos mag-flush ng 20 mins, nabawasan ang hapdi pero malabo pa rin ang paningin. Ano ang susunod?",
-      q3Opts:["A. Pauwiin na dahil nahugasan na naman","B. Takpan ng maluwag na sterile eye shield/pad (huwag idiin) at dalhin sa ospital para ma-check ng doktor ang cornea","C. Pahiran ng ointment sa bahay","D. Pa-drive-in na lang pauwi"],
+      q3Opts:[
+        "A. I-discharge na sa bahay ang pasyente dahil nahugasan na nang matagal at humupa na ang matinding hapdi",
+        "B. Lagyan ng maluwag na sterile eye shield nang hindi pinipisil, at dalhin sa ospital para ma-check ang cornea",
+        "C. Maglagay ng antibiotic ointment sa mata at ipahinga sa madilim na kwarto nang hindi na dinadala sa ER",
+        "D. Ipasabay na lang sa tricycle ng kaanak papunta sa ospital kung kaya nang magdilat nang bahagya"
+      ],
       q3Ans:1, q3Explain:"TAMA! Kailangan pa rin ma-evaluate sa ospital ang cornea para sa corneal ulceration o chemical damage mula sa venom."
     }
   ]
@@ -318,13 +366,28 @@ var cases = [
       story:"Nalunod yung bata, 8 years old! Nahango na namin 5 minutes ago, hindi humihinga, malamig, namumutla, walang pulso na makapa!",
       vitals:{airway:"May tubig at putik sa bibig", breathing:"0 - HINDI HUMIHINGA", pulse:"Hindi makapa - posibleng wala", bp:"Hindi makuha", spo2:"--", conscious:"GCS 3 - Unconscious, walang response", wound:"Walang sugat, malamig katawan, cyanotic lips"},
       q1:"PRIMARY: Walang breathing, walang pulso. Ano ang pinaka-critical na desisyon?",
-      q1Opts:["A. Baliktarin yung bata at ipalo yung likod para lumabas tubig sa baga","B. Simulan agad CPR - i-clear lang yung obvious na bara sa bibig, magbigay ng initial rescue breaths at chest compressions, huwag sayangin oras sa pagpapaalis ng tubig","C. Painitin agad yung bata gamit kumot at hintayin huminga mag-isa","D. Dalhin agad sa ospital na hindi nag-CPR"],
+      q1Opts:[
+        "A. Baliktarin ang bata at tapikin ang likod upang maubos muna ang tubig sa baga bago mag-CPR",
+        "B. Simulan agad ang CPR—alisin lang ang obvious na bara sa bibig at magbigay ng rescue breaths at compressions",
+        "C. Balutan agad ng makapal na kumot at obserbahan nang ilang segundo kung kusang babalik ang paghinga",
+        "D. Isakay agad sa ambulansya nang hindi nag-CPR upang sa ospital na simulan ang resuscitation"
+      ],
       q1Ans:1, q1Explain:"TAMA! Sa drowning, hypoxia ang kalaban. Hindi mo kailangan paalisin lahat ng tubig. Ang kailangan: oxygen agad via CPR.",
       q2:"CPR TECHNIQUE: Bata 8 years old, walang pulso. Ano ang tama?",
-      q2Opts:["A. Compressions-only CPR, huwag na mag-rescue breaths","B. 1 o 2 kamay depende sa laki ng bata, depth ~5cm (1/3 ng chest), magbigay ng rescue breaths dahil hypoxic arrest ang drowning, 30:2 (single rescuer)","C. Itigil ang CPR bawat 30 seconds para tingnan kung hihinga","D. Diinan sa tiyan para sumuka ng tubig"],
+      q2Opts:[
+        "A. Gumawa ng chest compressions lang at huwag nang magbigay ng rescue breaths upang hindi pumasok ang hangin sa tiyan",
+        "B. Mag-compress ng ~5 cm (1/3 chest depth) at magbigay ng rescue breaths dahil hypoxic arrest ang drowning",
+        "C. Ihinto ang compressions bawat 20 segundo upang suriin kung may lumalabas nang tubig sa bibig",
+        "D. Magbigay ng abdominal thrusts sa nakahigang bata upang maitulak palabas ang tubig mula sa tiyan"
+      ],
       q2Ans:1, q2Explain:"TAMA! Dahil hypoxic arrest ang drowning, napakahalaga ng rescue breaths kasabay ng chest compressions!",
       q3:"AFTER CPR: Bumalik yung pulso pero hindi pa rin humihinga ng maayos, nagsusuka ng tubig. Ano gagawin mo?",
-      q3Opts:["A. Ilagay sa recovery position agad kahit hindi pa humihinga nang normal","B. I-maintain airway, i-suction ang suka, bigyan ng oxygen / ventilatory support kung mahina ang hinga, i-monitor, at ilagay sa recovery position KUNG malakas at normal na ang paghinga","C. Pigilan yung pagsusuka para hindi ma-dehydrate","D. Painumin ng tubig para mapalitan yung tubig na nainom"],
+      q3Opts:[
+        "A. Ilagay agad sa recovery position kahit mahina at hindi pa regular ang paghinga upang hindi mabulunan",
+        "B. I-maintain ang airway, i-suction ang suka, bigyan ng oxygen/ventilatory support, at i-recovery position kapag normal na ang hinga",
+        "C. Pigilan ang pag-ubo at pagsusuka upang hindi mawalan ng fluids at electrolytes ang katawan ng bata",
+        "D. Painumin ng malinis na tubig upang mapalitan ang tubig mula sa ilog na kanyang nalunok"
+      ],
       q3Ans:1, q3Explain:"TAMA! Suction + airway + oxygen muna; recovery position ay kapag normal na ang paghinga at may pulso, habang ready mag-CPR ulit."
     },
     {
@@ -333,13 +396,28 @@ var cases = [
       story:"Tumalon nang pauna ang ulo yung binata sa mababaw na part ng sapa! Lumutang sya nang nakadapa, hinila namin sa pampang, humihinga pero hindi maigalaw ang kamay at paa!",
       vitals:{airway:"Bukas, umuungol", breathing:"16/min - Mababaw", pulse:"62 - Mabagal", bp:"90/60", spo2:"93%", conscious:"GCS 14 - Nalilito, giniginaw", wound:"Galos sa noo, hindi maigalaw ang 4 limbs, basa at giniginaw"},
       q1:"ASSESSMENT: Tumalon sa mababaw na tubig + galos sa noo + hindi maigalaw ang kamay at paa. Ano ang suspect mo?",
-      q1Opts:["A. Pulikat lang dahil sa malamig na tubig","B. Cervical spine (C-spine) injury / neurogenic shock — kailangan ng strict spinal immobilization habang pinapanatili ang airway","C. Lasing lang kaya ayaw gumalaw","D. Simpleng bukol lang sa ulo"],
+      q1Opts:[
+        "A. Matinding pulikat lang sa mga braso at binti dahil sa biglaang paglubog sa malamig na tubig ng sapa",
+        "B. Posibleng cervical spine injury at neurogenic shock kaya kailangan ng strict spinal immobilization at airway care",
+        "C. Pagkahilo at panghihina lang dulot ng sobrang paglangoy o pagod bago tumalon sa mababaw na bahagi",
+        "D. Simpleng superficial scalp contusion lang mula sa pagtama ng noo at walang kinalaman sa paggalaw ng limbs"
+      ],
       q1Ans:1, q1Explain:"TAMA! Diving into shallow water ay classic mechanism ng C-spine fracture. Ang mababang BP (90/60) + mabagal na pulse (62) ay senyales ng neurogenic shock!",
       q2:"INTERVENTION: Paano mo ihahanda ang pasyente para sa transport?",
-      q2Opts:["A. Paupuin para makasuka ng tubig","B. Panatilihin ang manual C-spine stabilization, maglagay ng cervical collar, i-log roll sa spine board, patuyuin at balutan ng dry blanket para maiwasan ang hypothermia, at magbigay ng oxygen","C. Buhatin sa kamay at paa nang walang spine board","D. Alisin ang cervical collar para makalingon sya"],
+      q2Opts:[
+        "A. Paupuin nang bahagya sa gilid ng sapa upang mas madaling makahinga at makalabas ang tubig sa bibig",
+        "B. Panatilihin ang C-spine stabilization, maglagay ng cervical collar at spine board, patuyuin/painitin, at bigyan ng oxygen",
+        "C. Buhatin ng dalawang responder sa kamay at paa nang direkta sa stretcher upang hindi maantala ang pag-alis",
+        "D. Alisin ang cervical collar kapag nakahiga na sa board upang hindi masikip at makagalaw nang komportable ang leeg"
+      ],
       q2Ans:1, q2Explain:"TAMA! C-spine immobilization + hypothermia prevention (wet skin causes rapid heat loss) + oxygen!",
       q3:"AIRWAY WITH C-SPINE: Biglang nagsuka ang pasyente habang nakahiga sa spine board. Paano mo i-manage ang airway nang hindi nasisira ang leeg?",
-      q3Opts:["A. I-tilt nang todo ang ulo sa gilid","B. I-log roll ang BUONG spine board (buong katawan nang sabay) sa gilid at i-suction agad ang bibig","C. Paupuin nang bigla","D. Hayaan lang hanggang matapos sumuka"],
+      q3Opts:[
+        "A. I-tilt nang todo ang ulo sa isang gilid habang naka-lock ang katawan sa board upang mabilis tumulo ang suka",
+        "B. I-log roll ang BUONG spine board nang sabay-sabay sa gilid at i-suction agad ang airway",
+        "C. Iangat nang mabilis ang likod at ulo paupo upang hindi maipon sa lalamunan ang isinusuka ng pasyente",
+        "D. Hayaan muna siyang matapos magsuka bago lumapit at mag-suction upang hindi matalsikan ang mukha"
+      ],
       q3Ans:1, q3Explain:"TAMA! Kapag naka-secure sa spine board at nagsuka, itagilid ang buong board nang sabay-sabay habang nagsu-suction!"
     },
     {
@@ -348,13 +426,28 @@ var cases = [
       story:"Nalunod sa alon yung 12-anyos na bata pero nailigtas agad! Gising na sya ngayon at nagsasalita, pero inuubo pa rin at parang hingal, sabi ng magulang iuwi na raw nila!",
       vitals:{airway:"Bukas, inuubo", breathing:"28/min - Mabilis, may crackles", pulse:"118 - Mabilis", bp:"110/75", spo2:"91% - Mababa", conscious:"GCS 15 - Gising pero pagod at inuubo", wound:"Walang sugat, basa, persistent cough"},
       q1:"ASSESSMENT: Gising na ang bata pero SpO2 91%, RR 28/min, at may crackles sa baga. Ano ang panganib kung iuwi lang?",
-      q1Opts:["A. Wala, basta gising na ay ligtas na","B. Pulmonary edema / Acute Respiratory Distress (secondary drowning complications) — pwedeng lumala ang pamamaga ng baga makalipas ang ilang oras kahit gising na ngayon","C. Sipon lang yan dahil nabasa","D. Gutom lang kaya hingal"],
+      q1Opts:[
+        "A. Mababa lang ang panganib dahil gising na ang bata, malinaw magsalita, at wala namang sugat sa katawan",
+        "B. Posibleng pulmonary edema o respiratory distress—pwedeng lumala ang paghinga makalipas ang ilang oras kahit gising na",
+        "C. Karaniwang ubo at hingal lang dahil sa malamig na simoy ng dagat at pagkapagod sa alon",
+        "D. Pansamantalang pagkabalisa lang dahil sa pagkakaligtas at mawawala rin pagkatapos makapagpahinga sa bahay"
+      ],
       q1Ans:1, q1Explain:"TAMA! Ang tubig sa baga ay nagdudulot ng surfactant washout at pulmonary edema. Kahit gising, delikado ang SpO2 91% at tachypnea!",
       q2:"INTERVENTION: Ano ang gagawin mo habang kinukumbinsi ang magulang na dalhin sa ospital?",
-      q2Opts:["A. Pirmahan na lang agad ang refusal form at umalis","B. Bigyan ng supplemental oxygen para umangat ang SpO2 (target ≥94%), ipaliwanag nang malinaw ang panganib ng respiratory failure, at patuyuin/painitin ang bata","C. Painumin ng gamot sa ubo","D. Pahigain nang nakadapa sa buhangin"],
+      q2Opts:[
+        "A. Ipaliwanag na okay na ang bata at papirmahin na agad ang magulang sa refusal kung ayaw nilang magpadala",
+        "B. Magbigay ng oxygen para umangat ang SpO2, ipainit/patuyuin ang bata, at ipaliwanag ang panganib sa magulang",
+        "C. Painumin ng cough syrup ang bata upang mabawasan ang ubo bago umuwi sa kanilang bahay",
+        "D. Pahigain nang nakadapa sa buhangin upang makapagpahinga muna nang walang oxygen bago magpasya"
+      ],
       q2Ans:1, q2Explain:"TAMA! Oxygen therapy + warm blankets + patient education sa magulang para pumayag sa hospital evaluation.",
       q3:"TRANSPORT: Pumayag na ang magulang. Anong posisyon ang pinakamainam sa ambulansya?",
-      q3Opts:["A. Semi-Fowler (nakaangat ang ulo/dibdib 30–45 degrees) para mas madaling makahinga, habang naka-oxygen at continuous SpO2 monitoring","B. Nakatiwarik (Trendelenburg) para tumulo ang tubig sa ilong","C. Nakadapa nang flat","D. Nakaupo nang nakayuko"],
+      q3Opts:[
+        "A. Semi-Fowler position na may supplemental oxygen at continuous SpO2 monitoring habang nasa biyahe",
+        "B. Nakahiga nang bahagyang nakababa ang ulo upang mas mabilis lumabas ang natitirang tubig sa ilong",
+        "C. Nakadapa nang flat sa stretcher upang hindi mapagod ang likod at dibdib ng bata habang umaandar",
+        "D. Nakaupo nang nakayuko paharap upang suportahan ng mga kamay ang paghinga sa buong biyahe"
+      ],
       q3Ans:0, q3Explain:"TAMA! Semi-Fowler position ay nakakatulong sa lung expansion at paghinga ng conscious drowning patient."
     }
   ]
@@ -370,13 +463,28 @@ var cases = [
       story:"Yung asawa ko 58 years old, sumikip dibdib 30 mins na, gumagapang sa kaliwang braso at panga, nahihirapan huminga, namamawis ng malamig, nasusuka! May hypertension sya!",
       vitals:{airway:"Bukas", breathing:"26/min - Hirap", pulse:"118 - Mabilis, irregular", bp:"160/95 - MATAAS", spo2:"92%", conscious:"GCS 15 - Gising, kinakabahan, namumutla", wound:"Walang sugat, pero clutching chest"},
       q1:"ASSESSMENT: Paano mo ma-differentiate kung heart attack ba to o hyperacidity / muscle pain lang?",
-      q1Opts:["A. Hyperacidity lang kasi nasusuka - painumin ng antacid","B. Heart attack (ACS) - kasi 30 mins na, sumikip dibdib na gumagapang sa braso at panga, hirap huminga, malamig na pawis, may hypertension - treat as heart attack agad","C. Muscle pain lang kasi kahapon nagbuhat sya ng mabigat","D. Panic attack lang kasi kinakabahan"],
+      q1Opts:[
+        "A. Malamang hyperacidity lang ito dahil may kasamang pagduduwal o pagkasuka matapos kumain o mag-alala",
+        "B. Senyales ito ng acute coronary syndrome—30 mins chest pressure, radiation sa braso/panga, dyspnea, at diaphoresis",
+        "C. Posibleng muscle strain lang sa dibdib at balikat dahil sa pang-araw-araw na gawain o pagbubuhat",
+        "D. Panic o anxiety attack lang ito dahil kinakabahan at mabilis ang tibok ng puso ng pasyente"
+      ],
       q1Ans:1, q1Explain:"TAMA! Classic ACS: chest pressure + radiation sa braso/panga + dyspnea + diaphoresis + risk factors. Treat as heart attack agad.",
       q2:"INTERVENTION: Ano ang TAMANG posisyon at management?",
-      q2Opts:["A. Pahigain ng flat at patakbuhin sa ospital para mabilis","B. Paupuin ng semi-Fowler (45 degrees), huwag pagalawin/paglakarin, bigyan ng oxygen kung SpO2 <94%, i-monitor vitals, huwag magbigay ng gamot nang walang protocol/order","C. Painumin ng tubig at pa-exercise para mawala bara","D. Bigyan ng aspirin agad kahit hindi mo alam kung allergic o may bleeding disorder"],
+      q2Opts:[
+        "A. Pahigain nang flat sa stretcher at madaliin ang pagbuhat palabas upang mabilis makarating sa ospital",
+        "B. Paupuin nang semi-Fowler, panatilihing kalmado at hindi pinapagalaw, magbigay ng oxygen, at huwag mag-medicate nang walang order",
+        "C. Painumin ng maligamgam na tubig at paglakarin nang dahan-dahan upang maibsan ang paninikip ng dibdib",
+        "D. Bigyan agad ng aspirin kahit hindi pa alam ang allergy, bleeding history, o local protocol"
+      ],
       q2Ans:1, q2Explain:"TAMA! Semi-Fowler para makahinga, absolute rest para hindi tumaas oxygen demand ng puso, at oxygen dahil SpO2 ay 92%.",
       q3:"TRANSPORT: Biglang nawalan ng pulso at hindi humihinga habang binubuhat. Ano gagawin mo?",
-      q3Opts:["A. Ituloy yung pagbuhat at sa ospital na mag-CPR","B. Ihinto yung pagbuhat, ilapag sa matigas na surface, simulan agad CPR at i-apply AED kung meron, huwag i-delay CPR para sa transport","C. Hintayin magising mag-isa","D. Bigyan ng precordial thump - suntukin yung dibdib"],
+      q3Opts:[
+        "A. Ituloy ang pagbuhat patungo sa ambulansya upang sa loob o sa ospital na simulan ang resuscitation",
+        "B. Ihinto ang pagbuhat, ilapag sa matigas na surface, at simulan agad ang CPR at AED nang hindi dini-delay",
+        "C. Hintayin nang ilang segundo kung kusang babalik ang malay at pulso matapos ilapag sa stretcher",
+        "D. Magbigay ng precordial thump sa dibdib bago magpasya kung kailangan pa ng chest compressions"
+      ],
       q3Ans:1, q3Explain:"TAMA! Cardiac arrest = CPR + AED agad sa matigas na surface!"
     },
     {
@@ -385,13 +493,28 @@ var cases = [
       story:"Yung nanay ko 64 years old, diabetic! Hindi raw masakit dibdib pero biglang nanghina nang sobra, nahihilo, hinihingal, at parang masusuka habang nagluluto!",
       vitals:{airway:"Bukas", breathing:"24/min - Hingal", pulse:"54 - Mabagal", bp:"88/58 - MABABA", spo2:"91%", conscious:"GCS 14 - Nanghihina, malamig pawis", wound:"Walang chest pain, pero severe weakness at diaphoresis"},
       q1:"ASSESSMENT: Walang matinding sakit sa dibdib pero diabetic, hingal, malamig pawis, at BP 88/58. Bakit delikado ito?",
-      q1Opts:["A. Simpleng pagod lang dahil nagluluto","B. Atypical / 'Silent' Myocardial Infarction — karaniwan sa elderly, babae, at diabetic dahil sa nerve damage (neuropathy), at may kasama nang cardiogenic shock (BP 88/58)","C. Kulang lang sa tulog","D. Mild flu lang"],
+      q1Opts:[
+        "A. Simpleng pagkapagod at init lang sa kusina habang nagluluto kaya nanghihina at pinagpapawisan",
+        "B. Pwedeng atypical myocardial infarction at cardiogenic shock—sa diabetic/elderly, madalas walang chest pain",
+        "C. Kulang lang sa tulog nitong mga nakaraang araw kaya nahihilo at bumabagal ang galaw ng pasyente",
+        "D. Mild viral illness lang ito na nagdudulot ng panghihina, pagkahilo, at bahagyang paghingal"
+      ],
       q1Ans:1, q1Explain:"TAMA! Ang mga diabetic at elderly ay madalas walang chest pain sa heart attack—weakness, dyspnea, at hypotension ang lumalabas!",
       q2:"INTERVENTION: Mababa ang BP (88/58) at SpO2 (91%). Ano ang tamang gawin?",
-      q2Opts:["A. Bigyan ng nitroglycerin para bumukas ang ugat","B. Bigyan ng oxygen, panatilihin ang pasyente na nakahiga nang komportable (huwag patayuin), i-monitor ang vitals bawat 5 minuto, at rapid transport sa ospital na may cardiac care","C. Palakarin papunta sa ambulansya","D. Painumin ng maraming energy drink"],
+      q2Opts:[
+        "A. Bigyan agad ng nitroglycerin upang lumuwang ang mga ugat at mapaginhawa ang paghinga ng pasyente",
+        "B. Magbigay ng oxygen, panatilihing nakahiga nang komportable at hindi pinapatayo, i-monitor vitals, at rapid transport",
+        "C. Alalayan tumayo at maglakad papunta sa ambulansya upang hindi manghina nang tuluyan ang mga binti",
+        "D. Painumin ng matamis o energy drink upang mabilis manumbalik ang lakas at tumaas ang blood pressure"
+      ],
       q2Ans:1, q2Explain:"TAMA! Bawal ang vasodilators (tulad ng nitro) kapag mababa ang BP (<90 systolic)! Oxygen + rest + rapid transport.",
       q3:"MONITORING: Habang nasa biyahe, bumaba pa ang pulse sa 42/min at nawalan ng malay pero may mahinang pulso pa. Ano ang gagawin?",
-      q3Opts:["A. Simulan agad ang chest compressions kung may severe bradycardia na may poor perfusion (<60 bpm sa bata, o unresponsive/no pulse), i-ready ang AED/defibrillator, at i-update ang receiving ER","B. Iwanan sa likod at mag-drive nang mabilis","C. Sampalin para magising","D. Tanggalin ang BP cuff"],
+      q3Opts:[
+        "A. Mag-CPR kung walang tiyak na pulso o unresponsive na may poor perfusion, ihanda ang AED, at i-update ang ER",
+        "B. Ipagpatuloy lang ang pagmamaneho nang mabilis nang hindi na hinihinto o binabago ang posisyon sa likod",
+        "C. Tapikin nang malakas ang balikat at pisngi upang subukang gisingin bago mag-assess ng breathing",
+        "D. Alisin muna ang BP cuff at oximeter upang makapag-focus sa pagmamasid sa mukha ng pasyente"
+      ],
       q3Ans:0, q3Explain:"TAMA! Kapag unresponsive at walang tiyak na pulso (check max 10 seconds), mag-CPR agad at i-attach ang AED!"
     },
     {
@@ -400,13 +523,28 @@ var cases = [
       story:"Biglang bumagsak yung 50-anyos na siklista sa kalsada! Nangingisay sandali tapos hindi na gumagalaw at hindi na humihinga!",
       vitals:{airway:"Bukas", breathing:"0 - Agonal gasps lang tapos wala na", pulse:"0 - Walang carotid pulse", bp:"0", spo2:"--", conscious:"GCS 3 - Unresponsive", wound:"Basa ng pawis ang dibdib, may dala kayong AED sa ambulansya"},
       q1:"PRIMARY: Nakita mong may agonal gasps (parang naghahabol ng hangin na bihira) at walang pulso. Ano ibig sabihin ng agonal gasps?",
-      q1Opts:["A. Humihinga pa sya kaya recovery position lang","B. Hindi normal na paghinga yan — senyales yan ng cardiac arrest! Simulan agad ang chest compressions at ikabit ang AED","C. Hinihika lang sya, bigyan ng inhaler","D. Hintayin muna kung magiging regular ang hinga"],
+      q1Opts:[
+        "A. Senyales na humihinga pa nang bahagya ang pasyente kaya sapat na ang paglalagay sa recovery position",
+        "B. Hindi ito normal na paghinga—senyales ito ng cardiac arrest kaya simulan agad ang CPR at ikabit ang AED",
+        "C. Posibleng biglaang atake ng hika o pagkapagod sa pagbibisikleta kaya bigyan muna ng inhaler o hangin",
+        "D. Maghintay ng ilang segundo kung magiging regular ang paghinga matapos ma-clear ang paligid ng kalsada"
+      ],
       q1Ans:1, q1Explain:"TAMA! Ang agonal breathing ay HINDI normal breathing. Treat as cardiac arrest immediately!",
       q2:"AED USE: Basa ng pawis ang dibdib ng pasyente at may AED ka na. Ano ang tamang gawin bago idikit ang AED pads?",
-      q2Opts:["A. Idikit agad ang pads kahit basang-basa para mabilis","B. Punasan muna nang tuyo ang dibdib gamit ang towel/gasas, siguraduhing walang nakadikit sa pasyente habang nag-a-analyze at nagsho-shock ang AED","C. Ibuhos ang tubig sa dibdib para dumaloy ang kuryente","D. Idikit ang dalawang pads nang magkapatong sa gitna"],
+      q2Opts:[
+        "A. Idikit agad ang pads kahit pinagpapawisan upang hindi masayang ang oras bago mag-analyze ang AED",
+        "B. Patuyuin muna ang dibdib gamit ang towel o gasa at siguraduhing walang nakadikit kapag nag-a-analyze at nagsho-shock",
+        "C. Buhusan nang kaunting tubig ang dibdib upang mas mabilis dumaloy ang kuryente mula sa AED pads",
+        "D. Idikit nang magkapatong ang dalawang pads sa gitna ng dibdib upang mas malakas ang delivery ng shock"
+      ],
       q2Ans:1, q2Explain:"TAMA! Punasan ang pawis para dumikit nang maayos ang pads at maiwasan ang skin burn o arcing, at siguraduhing 'Clear!' bago mag-shock.",
       q3:"POST-SHOCK: Pagkatapos magbigay ng shock ang AED, ano ang PINAKAUNANG gagawin mo?",
-      q3Opts:["A. Mag-pulse check muna nang 1 minuto","B. Ipagpatuloy agad ang chest compressions (30:2) nang walang pag-aalinlangan hanggang mag-analyze ulit ang AED pagkatapos ng 2 minuto","C. Tanggalin na ang AED pads","D. Paupuin ang pasyente"],
+      q3Opts:[
+        "A. Mag-check muna ng pulso nang matagal upang malaman kung bumalik na ang normal na ritmo ng puso",
+        "B. Ipagpatuloy agad ang chest compressions nang walang delay hanggang sa susunod na AED analysis pagkalipas ng 2 mins",
+        "C. Tanggalin agad ang AED pads mula sa dibdib upang maihanda ang pasyente sa paglipat sa stretcher",
+        "D. Bahagyang iangat ang ulo at balikat upang suriin kung nagising na ang pasyente matapos ang shock"
+      ],
       q3Ans:1, q3Explain:"TAMA! Immediate CPR right after AED shock! Huwag i-delay ang chest compressions."
     }
   ]
@@ -422,13 +560,28 @@ var cases = [
       story:"Nahulog yung tatay ko 65 years old sa bubong, mga 3 meters! Masakit daw likod, hindi makagalaw yung paa!",
       vitals:{airway:"Bukas", breathing:"18/min", pulse:"100", bp:"140/85", spo2:"97%", conscious:"GCS 15 - Gising, masakit", wound:"Masakit mid-back, tenderness sa spine, hindi maigalaw paa, numb daw"},
       q1:"ASSESSMENT: Ano ang pinaka-kinakabahan ka dito?",
-      q1Opts:["A. Bali sa paa lang kasi hindi maigalaw","B. Spinal cord injury - kasi nahulog from height + masakit likod + hindi maigalaw paa + numbness = red flags for spinal injury, kahit gising sya","C. Nabangga lang yung ulo","D. Nabugbog lang, kaya hindi maigalaw kasi masakit"],
+      q1Opts:[
+        "A. Malamang bali lang sa binti o paa ang dahilan kaya hindi niya maigalaw ang paa kahit gising",
+        "B. Posibleng spinal cord injury—fall from height + back pain + paralysis/numbness ay red flags kahit gising",
+        "C. Posibleng natamaan lang ang ulo sa pagbagsak kaya nahihilo at hindi maituon ang atensyon sa binti",
+        "D. Simpleng pasa at muscle spasm lang sa likod dahil sa pagkabigla mula sa pagkahulog sa bubong"
+      ],
       q1Ans:1, q1Explain:"TAMA! Fall from height + back pain + paralysis + numbness = spinal injury hanggang mapatunayan hindi.",
       q2:"INTERVENTION: Paano mo hahawakan yung pasyente?",
-      q2Opts:["A. Buhatin ng 2 tao sa kilikili at paa para mabilis mailipat","B. Huwag pagalawin, manual C-spine stabilization sa leeg, log-roll ng buong katawan ng sabay-sabay ng 3-4 responders, ilagay sa spinal board, i-secure ng straps at head blocks","C. Patayuin para ma-test kung makalakad sya","D. Lagyan lang ng splint sa paa kasi yun yung hindi maigalaw"],
+      q2Opts:[
+        "A. Buhatin ng dalawang responder sa ilalim ng braso at paa upang mabilis mailipat sa ligtas na lugar",
+        "B. Panatilihin ang C-spine stabilization, i-log roll nang sabay-sabay, at ilagay sa spine board na may straps at head blocks",
+        "C. Alalayan tumayo nang dahan-dahan upang masuri kung may lakas pa ang mga binti bago ihiga",
+        "D. Lagyan lang ng splint ang mga paa dahil iyon ang bahaging hindi maigalaw ng pasyente"
+      ],
       q2Ans:1, q2Explain:"TAMA! Spinal precautions: huwag pagalawin, manual stabilization, log-roll buong katawan sabay, spinal board.",
       q3:"PAIN MANAGEMENT: Sumisigaw sa sakit, GCS 15, BP 140/85. Ano gagawin mo sa sakit nya habang nasa field?",
-      q3Opts:["A. Bigyan ng malakas na painkiller na dala mo kahit walang order","B. I-assess pain scale, i-immobilize ng maayos para mabawasan sakit, i-monitor vitals, i-reassure, huwag magbigay ng gamot na hindi authorized, dalhin agad sa ospital","C. Sabihan na tiisin lang at huwag maingay","D. Lagyan ng yelo yung likod para manhid"],
+      q3Opts:[
+        "A. Magbigay ng dala ninyong pain reliever upang maibsan ang kirot kahit wala pang medical order",
+        "B. I-assess ang pain, i-immobilize nang maayos para mabawasan ang sakit, i-monitor vitals, at dalhin agad nang walang unauthorized meds",
+        "C. Sabihan ang pasyente na tiisin muna ang sakit at huwag magsisigaw upang hindi maubos ang lakas",
+        "D. Maglagay ng yelo nang direkta sa gitna ng likod upang mamanhid ang bahaging sumasakit"
+      ],
       q3Ans:1, q3Explain:"TAMA! Sa field, hindi ka pwedeng magbigay ng painkiller nang walang order. Tamang immobilization + reassurance ang unang lunas."
     },
     {
@@ -437,13 +590,28 @@ var cases = [
       story:"Nahulog sa puno ng niyog yung magkokopra! Bumagsak nang una ang balikat at ulo! Nagsuka nang isang beses at paulit-ulit nagtatanong kung nasaan sya!",
       vitals:{airway:"Bukas", breathing:"14/min - Mabagal", pulse:"58 - Mabagal", bp:"175/100 - MATAAS", spo2:"94%", conscious:"GCS 13 - Nalilito, paulit-ulit tanong", wound:"Malaking bukol at sugat sa ulo, masakit ang batok"},
       q1:"ASSESSMENT: Mataas na BP (175/100) + mabagal na pulse (58) + irregular/mabagal na hinga pagkatapos ng head trauma. Ano ang senyales na ito?",
-      q1Opts:["A. Normal lang sa pagod magkopra","B. Cushing's Triad — senyales ng tumataas na intracranial pressure (ICP) / severe brain injury! Kailangan ng mabilis na transport sa ospital na may CT scan/neurosurgery","C. Simpleng high blood lang","D. Dehydration lang"],
+      q1Opts:[
+        "A. Karaniwang pagbabago lang sa vitals matapos magtrabaho at mahulog mula sa mataas na puno ng niyog",
+        "B. Posibleng Cushing's triad—senyales ng tumataas na intracranial pressure kaya kailangan ng mabilis na transport",
+        "C. Existing hypertension lang na lumabas dahil sa kaba at sakit mula sa pagkakabagsak sa lupa",
+        "D. Mild dehydration lang mula sa pagtatrabaho sa initan kaya bumagal ang paghinga at tumigil ang pagsusuka"
+      ],
       q1Ans:1, q1Explain:"TAMA! Cushing's Triad (Hypertension + Bradycardia + Irregular respiration) ay red flag ng dangerously high intracranial pressure!",
       q2:"AIRWAY & C-SPINE: Paano mo bubuksan ang airway kung bumaba pa ang GCS nya at kailangan i-assist?",
-      q2Opts:["A. Head-tilt chin-lift nang todo","B. Jaw-thrust maneuver habang pinapanatili ang manual in-line C-spine stabilization nang hindi ginagalaw ang leeg","C. I-flex ang leeg paharap","D. Lagyan ng unan sa ilalim ng ulo"],
+      q2Opts:[
+        "A. Gumamit ng head-tilt chin-lift upang mabilis mabuksan ang daanan ng hangin habang nakahiga",
+        "B. Gumamit ng jaw-thrust maneuver habang pinapanatili ang manual in-line C-spine stabilization nang hindi ginagalaw ang leeg",
+        "C. I-flex nang bahagya ang leeg paharap upang maalis ang pagkaka-ipit ng hangin sa lalamunan",
+        "D. Maglagay ng makapal na unan sa ilalim ng ulo upang maiangat ito nang komportable habang humihinga"
+      ],
       q2Ans:1, q2Explain:"TAMA! Sa trauma patients na may suspected C-spine injury, Jaw-Thrust maneuver ang gamit para hindi ma-extend ang leeg!",
       q3:"TRANSPORT: Ano ang dapat mong bantayan nang mahigpit habang nasa biyahe?",
-      q3Opts:["A. Hayaan matulog nang walang bantay","B. I-monitor ang GCS/pupils (kung magkaiba ang laki o unequal pupils), SpO2, BP, at maging handa sa suction kung magsuka ulit","C. Painumin ng tubig para hindi ma-dehydrate","D. Tanggalin ang head blocks sa spine board"],
+      q3Opts:[
+        "A. Hayaan muna siyang makatulog nang payapa upang mabawasan ang pagkalito at hindi na magtanong",
+        "B. Bantayan ang GCS at pupils, SpO2, at BP, at maging handa sa suction kung muling magsuka",
+        "C. Painumin ng kaunting tubig kapag nagising upang maibsan ang pagkauhaw at pagkalito sa biyahe",
+        "D. Luwagan o tanggalin ang head blocks sa spine board kung mukhang naiirita na ang pasyente"
+      ],
       q3Ans:1, q3Explain:"TAMA! Unequal pupils (anisocoria) at bumababang GCS ay kritikal na bantayan sa Traumatic Brain Injury (TBI)."
     },
     {
@@ -452,13 +620,28 @@ var cases = [
       story:"Nadulas sa hagdan yung karpintero at bumagsak sa nakatayong bakal (rebar)! Nakatusok pa yung bakal sa gilid ng tiyan nya!",
       vitals:{airway:"Bukas, umiiyak", breathing:"24/min", pulse:"116", bp:"110/70", spo2:"96%", conscious:"GCS 15 - Gising, takot", wound:"May nakabaon na bakal sa kanang tagiliran ng tiyan, may konting dugo sa paligid"},
       q1:"INTERVENTION: May nakabaon na bakal sa tiyan ng pasyente. Ano ang PINAKA-IMPORTANTENG rule?",
-      q1Opts:["A. Bunutin agad ang bakal para madaling maisakay sa ambulansya","B. HUWAG bunutin ang nakabaon na bagay! I-stabilize ito sa posisyon gamit ang bulky dressings/gauze sa paligid para hindi gumalaw habang ibinibiyahe","C. Ugain ang bakal para tingnan kung gaano kalalim","D. Ibuhos ang alcohol sa loob ng sugat"],
+      q1Opts:[
+        "A. Bunutin agad nang maingat ang bakal upang mas madaling mailipat at maisakay sa ambulansya",
+        "B. Huwag bunutin ang nakabaon na bakal—i-stabilize ito sa posisyon gamit bulky dressings upang hindi gumalaw",
+        "C. Bahagyang galawin o sukatin ang lalim ng bakal upang masabi agad sa doktor kung gaano kalala ang tusok",
+        "D. Lagyan ng antiseptic sa paligid at bahagyang hilahin palabas upang hindi masagad ang loob ng tiyan"
+      ],
       q1Ans:1, q1Explain:"TAMA! Never remove an impaled object in the field! Ang bakal ang nagsisilbing 'plug' na pumipigil sa malakas na internal bleeding.",
       q2:"EXPOSURE: Paano kung masyadong mahaba ang bakal at hindi kasya sa ambulansya?",
-      q2Opts:["A. Hilahin palabas nang kaunti","B. I-stabilize muna nang mabuti ang base ng bakal bago putulin ng rescue team ang sobrang haba nang walang vibration/galaw sa sugat","C. Ibaluktot ang bakal gamit ang kamay","D. Iwanan sa bahay ang pasyente"],
+      q2Opts:[
+        "A. Bahagyang bunutin palabas ang dulo ng bakal upang umikli at magkasya sa loob ng ambulansya",
+        "B. I-stabilize muna nang mabuti ang base ng bakal bago putulin ng rescue team ang sobrang haba nang walang galaw",
+        "C. Pilitin ibaluktot paharap ang nakausling bakal upang hindi tumama sa bubong ng ambulansya",
+        "D. Iwanan muna sa scene ang pasyente habang hinahanapan ng mas malaking sasakyan na magkakasya ang bakal"
+      ],
       q2Ans:1, q2Explain:"TAMA! Kung kailangang putulin ang nakausling parte, dapat naka-stabilize ang base para hindi gumalaw ang dulo sa loob ng katawan.",
       q3:"TRANSPORT: Anong ospital dapat dalhin ang pasyente?",
-      q3Opts:["A. Sa rural health unit na walang operating room","B. Sa trauma center / ospital na may surgical capability (operating room) at i-pre-alert ang ER team","C. Sa lying-in clinic","D. Sa botika muna"],
+      q3Opts:[
+        "A. Sa pinakamalapit na health center o clinic upang malinis muna ang sugat bago magpasya sa paglipat",
+        "B. Sa ospital na may surgical capability at operating room, at i-pre-alert agad ang ER team",
+        "C. Sa lying-in clinic malapit sa barangay upang masuri muna ang vital signs bago bumiyahe nang malayo",
+        "D. Sa botika o drugstore muna upang bumili ng sterile dressing at gamot bago pumunta sa ospital"
+      ],
       q3Ans:1, q3Explain:"TAMA! Impaled abdominal trauma ay nangangailangan ng emergency surgery sa operating room."
     }
   ]
@@ -474,13 +657,28 @@ var cases = [
       story:"Nasunog yung kusina! Napaso yung bata sa braso, namumula at may paltos, umiiyak, umuubo kasi nakalanghap ng usok!",
       vitals:{airway:"Bukas pero may soot sa bibig, umuubo", breathing:"24/min - Ubo", pulse:"110", bp:"110/70", spo2:"95%", conscious:"GCS 15 - Umiiyak, gising", wound:"Burn sa kanang braso at pisngi, namumula, may paltos, estimate 9% TBSA"},
       q1:"ASSESSMENT: Ano ang pinaka-delikado dito bukod sa paso sa braso?",
-      q1Opts:["A. Yung paso sa braso lang - yun lang gamutin","B. Airway burn / smoke inhalation - kasi may soot sa bibig, umuubo, nasunog sa loob ng bahay - pwedeng mamaga yung airway at hindi makahinga mamaya kahit okay pa ngayon","C. Yung nasunog na kusina - yun yung unahin","D. Yung paltos - yun yung pinaka-delikado"],
+      q1Opts:[
+        "A. Ang paso sa braso ang pangunahing panganib dahil malawak ang pamumula at may mga paltos na",
+        "B. Posibleng airway burn o smoke inhalation—may soot at ubo na pwedeng magdulot ng pamamaga ng airway",
+        "C. Ang natitirang init at usok sa loob ng kusina ang pinaka-delikado kaya unahin ang pag-apula",
+        "D. Ang pagputok ng maliliit na paltos sa balat ang pangunahing panganib dahil madaling magdulot ng kirot"
+      ],
       q1Ans:1, q1Explain:"TAMA! Sa sunog sa loob ng bahay + soot sa bibig + ubo = smoke inhalation. Ang airway pwedeng mamaga nang biglaan.",
       q2:"INTERVENTION: Paano mo gagamutin yung burn?",
-      q2Opts:["A. Lagyan ng toothpaste at mantika para hindi dumikit","B. I-cool ng malinis na running water 10-20 mins, huwag lagyan ng yelo diretso, takpan ng sterile non-adherent dressing, huwag puputukin paltos, alisin yung masikip na damit/relo bago mamaga","C. Lagyan ng yelo diretso sa paso para mabilis lumamig","D. Balutan ng mahigpit na bandage para hindi pumasok hangin"],
+      q2Opts:[
+        "A. Pahiran ng toothpaste o mantika ang paso upang maibsan ang init at hindi dumikit sa tela",
+        "B. Palalamigin ng malinis na running water nang 10–20 mins, tatakpan ng sterile dressing, at hindi puputukin ang paltos",
+        "C. Maglagay ng yelo nang direkta sa paso upang mabilis lumamig at mabawasan ang pamamaga",
+        "D. Balutan nang mahigpit gamit ang bandage upang maprotektahan ang paso laban sa hangin at alikabok"
+      ],
       q2Ans:1, q2Explain:"TAMA! Running water lang, hindi yelo, hindi toothpaste, hindi mantika. Huwag puputukin ang paltos.",
       q3:"TRANSPORT: Bata, may burn sa mukha, umuubo, SpO2 95%. Ano ang transport decision?",
-      q3Opts:["A. Dalhin sa pinakamalapit na clinic lang, kasi maliit lang naman paso","B. Dalhin agad sa ospital na kaya mag-manage ng burn + airway, i-monitor airway every 5 mins, i-position ng semi-upright kung nahihirapan huminga, huwag takpan mukha ng mahigpit","C. Hintayin muna kung mawawala ubo bago dalhin","D. Dalhin pero patagilid para hindi makita yung paso"],
+      q3Opts:[
+        "A. Dalhin sa pinakamalapit na clinic dahil maliit lang naman ang bahagi ng balat na napaso sa bata",
+        "B. Dalhin agad sa ospital na may burn at airway care, bantayan ang airway bawat 5 mins, at i-position nang tama",
+        "C. Maghintay muna nang kaunti upang tingnan kung hupa na ang pag-ubo bago magpasya sa biyahe",
+        "D. Ihiga nang nakatagilid at takpan nang mahigpit ang mukha upang hindi mairita sa hangin ng ambulansya"
+      ],
       q3Ans:1, q3Explain:"TAMA! Burn sa mukha + smoke inhalation = high risk airway. Kailangan sa ospital na may advanced airway capability."
     },
     {
@@ -489,13 +687,28 @@ var cases = [
       story:"Natabig ng 4-anyos na bata yung kaldero ng kumukulong sabaw! Nabanlian ang buong dibdib, tiyan, at dalawang hita! Umiiyak nang malakas!",
       vitals:{airway:"Bukas, umiiyak", breathing:"30/min - Mabilis", pulse:"135 - Mabilis", bp:"95/60", spo2:"96%", conscious:"GCS 15 - Irritable, umiiyak", wound:"Partial thickness scald burn sa buong anterior trunk at thighs (~30% TBSA), nakadikit ang basang kamiseta"},
       q1:"INITIAL CARE: Nakadikit pa ang mainit at basang kamiseta sa dibdib ng bata. Ano ang gagawin?",
-      q1Opts:["A. Hilaing bigla ang kamiseta kahit nakadikit sa balat","B. Buhusan ng cool clean water para lumamig ang tela, dahan-dahang alisin ang damit na hindi nakadikit (gupitin sa paligid kung nakadikit sa balat), at iwasan ang hypothermia","C. Ibabad sa yelo ang buong katawan ng bata nang 30 minuto","D. Pahiran ng butter at harina"],
+      q1Opts:[
+        "A. Hilahin nang mabilis ang basang kamiseta upang maalis agad ang mainit na tela sa dibdib ng bata",
+        "B. Palamigin ng cool water, alisin ang hindi nakadikit na damit o gupitin sa paligid, at iwasan ang hypothermia",
+        "C. Ibabad ang buong katawan ng bata sa napakalamig na tubig o yelo nang 30 mins upang maalis ang init",
+        "D. Pahiran ng mantika o harina ang ibabaw ng kamiseta upang lumambot bago hilahin palayo sa balat"
+      ],
       q1Ans:1, q1Explain:"TAMA! Sa malaking burn (>20% TBSA) lalo sa bata, huwag ibabad nang matagal sa sobrang lamig na tubig dahil mabilis mag-hypothermia!",
       q2:"DRESSING: Malaki ang burn area (~30% TBSA). Paano mo tatakpan ang paso sa biyahe?",
-      q2Opts:["A. Takpan ng tuyo at malinis na sterile burn sheet / non-adherent dressing at balutan ng kumot sa ibabaw para mapanatili ang body heat","B. Basain ng tubig ang buong kumot at ibalot sa bata","C. Pahiran ng petroleum jelly ang buong katawan","D. Hayaan nakabukas sa hangin ng aircon"],
+      q2Opts:[
+        "A. Takpan ng dry sterile dressing o burn sheet at lagyan ng kumot sa ibabaw upang mapanatili ang init ng katawan",
+        "B. Ibabad sa tubig ang buong kumot at ibalot nang mahigpit sa bata upang manatiling malamig ang paso",
+        "C. Pahiran ng makapal na ointment ang buong paso upang hindi matuyo ang balat habang nasa biyahe",
+        "D. Hayaang nakabukas ang paso sa hangin ng ambulansya upang mabilis matuyo at hindi mainitan ang bata"
+      ],
       q2Ans:0, q2Explain:"TAMA! Dry sterile dressing + blanket over top para maiwasan ang infection at hypothermia sa malalaking burns.",
       q3:"FLUID & SHOCK RISK: Bakit mataas ang risk ng shock sa 30% TBSA burn?",
-      q3Opts:["A. Dahil sa matinding fluid loss mula sa nasirang balat (burn shock) — kailangan ng mabilis na transport para sa IV fluid resuscitation sa ospital","B. Dahil lang sa takot sa ambulansya","C. Dahil sa sobrang tulog","D. Walang risk ng shock ang scald burn"],
+      q3Opts:[
+        "A. Dahil sa matinding fluid loss mula sa malawak na burn kaya kailangan ng mabilis na transport para sa IV fluids",
+        "B. Dahil lang sa pag-iyak at pagkagulat ng bata matapos matabig ang kaldero ng mainit na sabaw",
+        "C. Dahil sa mabilis na paghinga at pagkapagod mula sa pag-iyak nang matagal bago dumating ang rescue",
+        "D. Dahil mababa ang panganib ng shock sa scald burn kumpara sa sugat na may direktang pagdurugo"
+      ],
       q3Ans:0, q3Explain:"TAMA! Ang malawak na burn ay nagdudulot ng massive fluid shift at hypovolemic/burn shock."
     },
     {
@@ -504,13 +717,28 @@ var cases = [
       story:"Natapunan ng matapang na kemikal / acid sa braso at dibdib yung magsasaka habang naghahalo ng pang-spray! Umook-ok at nasusunog daw ang balat!",
       vitals:{airway:"Bukas", breathing:"22/min", pulse:"112", bp:"130/80", spo2:"97%", conscious:"GCS 15 - Nasasaktan nang sobra", wound:"Chemical burn sa kaliwang braso at dibdib, may pulbos at likido pa sa damit"},
       q1:"SCENE & PPE: Ano ang dapat mong suotin at gawin bago hawakan ang pasyente?",
-      q1Opts:["A. Hawakan agad gamit ang bare hands","B. Magsuot ng proper PPE (gloves, goggles/mask), alisin ang contaminated na damit/sapatos ng pasyente, at i-brush off kung may dry powder bago buhusan ng tubig","C. Hugasan ng alcohol ang kemikal","D. Balutan agad ng plastic ang damit"],
+      q1Opts:[
+        "A. Lumapit agad at hawakan ang braso ng pasyente upang masuri agad ang lalim ng kemikal sa balat",
+        "B. Magsuot ng tamang PPE, alisin ang contaminated na damit, at i-brush off ang dry powder bago buhusan ng tubig",
+        "C. Hugasan nang mabilis ng alcohol ang kemikal upang ma-neutralize ito bago punasan ng malinis na tela",
+        "D. Balutan agad ng plastic ang damit ng pasyente upang hindi tumulo ang kemikal sa sahig ng ambulansya"
+      ],
       q1Ans:1, q1Explain:"TAMA! PPE muna para hindi ka rin mapaso ng kemikal! Brush off dry chemicals first, strip contaminated clothes, then flush.",
       q2:"DECONTAMINATION: Gaano katagal dapat banlawan ng malinis na tubig ang chemical burn?",
-      q2Opts:["A. 1 minuto lang sapat na","B. Tuloy-tuloy na pagbanlaw (copious irrigation) nang hindi bababa sa 20 minuto o hanggang mawala ang hapdi","C. 30 seconds tapos punasan ng tuyong basahan","D. Huwag basain ng tubig"],
+      q2Opts:[
+        "A. Banlawan nang mga 1 minuto upang mabawasan ang kemikal bago takpan ng sterile dressing ang paso",
+        "B. Banlawan nang tuloy-tuloy gamit ang malinis na tubig nang hindi bababa sa 20 minuto o hanggang mawala ang hapdi",
+        "C. Banlawan nang 30 segundo at punasan nang tuyong tela upang hindi mabasa nang husto ang damit",
+        "D. Huwag basain ng tubig ang kemikal dahil maaari itong kumalat at mag-react sa balat ng pasyente"
+      ],
       q2Ans:1, q2Explain:"TAMA! Sa chemical burn, patuloy na nasusunog ang balat hangga't may natitirang kemikal—kailangan ng at least 20 mins continuous flushing!",
       q3:"HANDOVER: Ano ang mahalagang dalhin o itanong para sa doktor sa ospital?",
-      q3Opts:["A. Pangalan o litrato ng label ng kemikal (SDS/container info) kung ligtas makuha, para alam ng doktor ang exact antidote o treatment","B. Wala na, basta iwan sa gate ng ER","C. Yung maruming damit ng pasyente nang walang plastik","D. Presyo ng kemikal"],
+      q3Opts:[
+        "A. Kunin ang pangalan o label ng kemikal kung ligtas makuha upang malaman ng doktor ang tamang treatment",
+        "B. Wala nang kailangang dalhin o itanong basta maihatid agad sa emergency room ang pasyente",
+        "C. Dalhin ang hubad na damit na may kemikal nang walang lagayan upang makita ng nurse sa ER",
+        "D. Itanong kung saan nabili at magkano ang halaga ng kemikal upang maitala sa incident log"
+      ],
       q3Ans:0, q3Explain:"TAMA! Ang pangalan/label ng chemical ay napakahalaga sa ER doctors para sa targeted management."
     }
   ]
@@ -526,13 +754,28 @@ var cases = [
       story:"Nabulunan sa karne yung tatay ko habang kumakain! Hawak nya leeg nya, hindi makapagsalita, hindi makaubo, namumula na at nangingitim ang labi!",
       vitals:{airway:"Complete obstruction - walang tunog", breathing:"0 - Walang hanging lumalabas", pulse:"122 - Mabilis", bp:"150/90", spo2:"84% - Bumababa", conscious:"GCS 15 - Gising pero panic, universal choking sign", wound:"Walang sugat, cyanotic lips, clutching throat"},
       q1:"ASSESSMENT: Hindi makapagsalita, hindi makaubo, at hawak ang leeg. Anong uri ng airway obstruction ito?",
-      q1Opts:["A. Mild obstruction — sabihan lang na umubo nang malakas","B. Severe / Complete Airway Obstruction — kailangan ng agarang abdominal thrusts (Heimlich maneuver) habang gising pa","C. Hika lang — bigyan ng tubig","D. Heartburn lang"],
+      q1Opts:[
+        "A. Mild airway obstruction lang kaya hikayatin siyang umubo nang malakas at maghintay kung lalabas ang bara",
+        "B. Severe/complete airway obstruction—kailangan ng agarang abdominal thrusts habang gising pa ang pasyente",
+        "C. Posibleng biglaang atake ng hika kaya bigyan muna ng tubig o ipahinga nang nakaupo sa upuan",
+        "D. Simpleng pagkabara lang sa lalamunan na karaniwang kusang nawawala kapag lumuwag ang paghinga"
+      ],
       q1Ans:1, q1Explain:"TAMA! Kapag hindi makapagsalita, hindi makahinga, o silent cough, complete obstruction na yan. Kailangan ng abdominal thrusts agad!",
       q2:"INTERVENTION: Paano ang tamang pagbigay ng Abdominal Thrusts (Heimlich) sa gising na matanda?",
-      q2Opts:["A. Tumayo sa likod, ilagay ang kamao sa itaas ng pusod (below xiphoid process), hawakan ng kabilang kamay, at hilahin papasok at pataas (inward and upward) hanggang lumabas ang bara o mawalan ng malay","B. Diinan sa mismong dibdib/sternum habang nakatayo","C. Ipalo nang mahina sa balikat habang nakaupo","D. Painumin ng maraming tubig para bumaba ang karne"],
+      q2Opts:[
+        "A. Tumayo sa likod, ilagay ang kamao sa itaas ng pusod, hawakan ng kabilang kamay, at hilahin papasok at pataas",
+        "B. Idiin nang malakas ang kamao sa gitna ng dibdib o sternum habang nakatayo upang mapiga ang baga",
+        "C. Tapikin nang mahina ang balikat habang nakaupo upang hindi matumba ang pasyente sa upuan",
+        "D. Painumin ng maraming tubig upang maitulak pababa ang nakabara na piraso ng karne sa lalamunan"
+      ],
       q2Ans:0, q2Explain:"TAMA! Kamao sa pagitan ng pusod at ribcage, quick inward-and-upward thrusts!",
       q3:"DETERIORATION: Habang ginagawa mo ang thrusts, biglang nawalan ng malay ang pasyente at bumagsak! Ano ang susunod?",
-      q3Opts:["A. Ituloy ang pagtayo sa kanya","B. Dahan-dahang ihiga sa matigas na sahig, simulan agad ang CPR (30 compressions), at sa tuwing bubuksan ang bibig para magbigay ng breath, silipin kung nakikita na ang bara bago i-sweep","C. Mag-blind finger sweep kahit walang nakikita","D. Hintayin magising"],
+      q3Opts:[
+        "A. Subukang panatilihing nakatayo nang may alalay upang maituloy ang pagbigay ng thrusts sa likod",
+        "B. Ihiga sa matigas na sahig, simulan agad ang CPR, at silipin lang ang bibig kung nakikita ang bara bago i-sweep",
+        "C. Mag-blind finger sweep sa loob ng bibig kahit walang nakikitang bara upang siguradong malinis",
+        "D. Maghintay nang ilang segundo sa sahig upang tingnan kung kusang magigising ang pasyente"
+      ],
       q3Ans:1, q3Explain:"TAMA! Kapag nawalan ng malay ang choking patient, ihiga at mag-CPR! Ang chest compressions ay nakakatulong magtulak palabas ng bara. Never do blind finger sweeps!"
     },
     {
@@ -541,13 +784,28 @@ var cases = [
       story:"Yung baby ko 8 months old, nakalunok ng maliit na laruan! Hindi umiiyak, walang tunog, namumutla at nangingitim na ang labi!",
       vitals:{airway:"Complete obstruction - silent", breathing:"0 - Retractions, walang hangin", pulse:"140", bp:"--", spo2:"82%", conscious:"Alert pero distressed, silent", wound:"8-month-old infant, cyanotic"},
       q1:"INTERVENTION: Sanggol na wala pang 1 taong gulang (8 months) ang nabulunan. Ano ang TAMANG technique?",
-      q1Opts:["A. Abdominal thrusts (Heimlich) gaya sa matanda","B. 5 Back Blows (sa pagitan ng shoulder blades) salitan ng 5 Chest Thrusts (gamit ang 2 daliri sa gitna ng dibdib), habang nakababa ang ulo kaysa katawan","C. Baliktarin ang baby sa paa at alugin","D. Dukutin ng daliri ang lalamunan kahit hindi nakikita"],
+      q1Opts:[
+        "A. Magbigay ng abdominal thrusts sa tiyan sa itaas ng pusod gaya ng ginagawa sa matanda",
+        "B. Magbigay ng 5 back blows salitan ng 5 chest thrusts gamit ang 2 daliri habang nakababa ang ulo",
+        "C. Hawakan sa paa at baliktarin ang sanggol nang bahagya upang makatulong ang gravity sa paglabas",
+        "D. Ipalo nang malakas ang likod ng sanggol gamit ang buong palad kahit nakatayo nang tuwid"
+      ],
       q1Ans:1, q1Explain:"TAMA! BAWAL ang abdominal thrusts sa infant (<1 yr) dahil pwedeng mapinsala ang atay! 5 back blows + 5 chest thrusts ang tama.",
       q2:"POSITIONING: Paano ang tamang hawak sa sanggol habang nagbibigay ng 5 back blows?",
-      q2Opts:["A. Nakadapa sa iyong forearm, suportado ang ulo at panga (huwag pisilin ang leeg), at mas mababa ang ulo kaysa dibdib","B. Nakatayo nang diretso","C. Nakahiga nang nakatihaya sa sahig","D. Nakasabit sa balikat"],
+      q2Opts:[
+        "A. Nakadapa sa iyong forearm, suportado ang ulo at panga, at mas mababa ang ulo kaysa dibdib",
+        "B. Nakatayo nang diretso sa iyong braso upang hindi mahirapan sa pag-alalay sa katawan ng sanggol",
+        "C. Nakahiga nang nakatihaya sa sahig upang madaling makita ang paggalaw ng dibdib at mukha",
+        "D. Nakasabit nang bahagya sa balikat upang mas madaling maabot ang likod ng sanggol"
+      ],
       q2Ans:0, q2Explain:"TAMA! Support the head and jaw firmly, keep head lower than chest so gravity helps expel the object.",
       q3:"OUTCOME: Lumabas ang maliit na laruan at umiyak na nang malakas ang sanggol! Ano ang susunod?",
-      q3Opts:["A. Iwanan na sa bahay dahil umiiyak na","B. I-check ang airway/breathing/SpO2, magbigay ng oxygen kung kailangan, at dalhin pa rin sa ospital para ma-check kung may injury sa lalamunan o trachea","C. Painumin agad ng gatas","D. Patulugin nang nakadapa"],
+      q3Opts:[
+        "A. Iwanan na sa bahay dahil umiiyak na nang malakas at mukhang nawala na ang pagkabara",
+        "B. I-check ang airway, breathing, at SpO2, magbigay ng oxygen kung kailangan, at dalhin pa rin sa ospital",
+        "C. Painumin agad ng gatas upang mapakalma at makatulog nang mahimbing ang sanggol matapos umiyak",
+        "D. Patulugin nang nakadapa sa kama upang matiyak na hindi na mauulit ang pagkabara"
+      ],
       q3Ans:1, q3Explain:"TAMA! Kahit lumabas na ang bara, kailangan pa ring ma-evaluate sa ospital ang infant para sa airway swelling o trauma."
     },
     {
@@ -556,13 +814,28 @@ var cases = [
       story:"Nabulunan sa kakanin yung buntis kong asawa, 8 months na ang tiyan! Hindi makahinga at hindi makapagsalita!",
       vitals:{airway:"Complete obstruction", breathing:"0 - Walang hangin", pulse:"124", bp:"135/85", spo2:"85%", conscious:"GCS 15 - Gising, hawak ang leeg, malaki ang tiyan", wound:"8 months pregnant, severe choking"},
       q1:"MODIFICATION: 8 months pregnant ang pasyente at complete choking. Saan mo ilalagay ang iyong kamay para sa thrusts?",
-      q1Opts:["A. Sa tiyan pa rin sa itaas ng pusod","B. Chest thrusts — ilagay ang kamao sa gitna ng dibdib (lower half ng sternum) at hilahin nang diretso papasok (straight back), iwasan ang tiyan","C. Ipalo lang sa likod nang mahina","D. Pahigain sa tiyan"],
+      q1Opts:[
+        "A. Ilagay ang kamao sa tiyan sa itaas ng pusod gaya ng karaniwang abdominal thrust",
+        "B. Gumawa ng chest thrusts—ilagay ang kamao sa gitna ng sternum at hilahin nang diretso papasok",
+        "C. Magbigay ng marahan na tapik sa likod habang nakahiga nang nakatihaya sa upuan",
+        "D. I-pressure ang tagiliran ng tiyan upang maitulak pataas ang hangin mula sa ibaba"
+      ],
       q1Ans:1, q1Explain:"TAMA! Sa buntis (at sa mga obese patients na hindi maabot ang tiyan), Chest Thrusts sa gitna ng sternum ang ginagawa imbes na abdominal thrusts!",
       q2:"AIRWAY CHECK: Paano kung may nakita kang malaking piraso ng kakanin sa bibig pagkatapos ng thrusts?",
-      q2Opts:["A. Gamitin ang hooked finger para maingat na alisin ang nakikitang bara nang hindi naitutulak pabalik sa lalamunan","B. Itulak pababa para malunok","C. Hayaan lang sa bibig","D. Pahigain nang flat"],
+      q2Opts:[
+        "A. Maingat na alisin ang malinaw na nakikitang bara gamit ang daliri nang hindi naitutulak pabalik",
+        "B. Itulak nang bahagya pababa upang malunok na lang kung malambot na ang kakanin",
+        "C. Hayaan muna sa loob ng bibig at obserbahan kung kusang malulunok kapag humupa ang kaba",
+        "D. Pahigain nang flat sa sahig upang hindi matumba kung mahilo habang inilalabas ang bara"
+      ],
       q2Ans:0, q2Explain:"TAMA! Kung malinaw na nakikita ang bara sa bibig, maaari itong alisin nang maingat (visual sweep only).",
       q3:"POST-EVENT: Naalis ang bara at nakahinga na ang buntis. Ano ang tamang posisyon at transport?",
-      q3Opts:["A. Ihiga nang flat nang nakatihaya (supine)","B. Paupuin nang komportable o ihiga nang nakatagilid sa kaliwa (left lateral) kung hihiga, magbigay ng oxygen, at i-transport sa ospital para ma-check pati ang baby","C. Huwag nang dalhin sa ospital","D. Palakarin nang malayo"],
+      q3Opts:[
+        "A. Pahigain nang flat nang nakatihaya upang maging pantay ang daloy ng dugo sa buong katawan",
+        "B. Paupuin nang komportable o i-left lateral kung hihiga, magbigay ng oxygen, at dalhin sa ospital",
+        "C. Huwag nang dalhin sa ospital kung nakakahinga na nang maluwag at normal na ang kulay",
+        "D. Palakarin nang dahan-dahan papunta sa ambulansya upang mapanatiling gising at alerto"
+      ],
       q3Ans:1, q3Explain:"TAMA! Sa late pregnancy, iwasan ang flat supine position (supine hypotensive syndrome) — semi-sitting o left lateral + oxygen + OB/ER check!"
     }
   ]
@@ -578,13 +851,28 @@ var cases = [
       story:"Nakuryente yung nagkakabit ng antenna sa bubong! Sumabit sa live wire ng poste, bumagsak sa bubong at hindi gumagalaw!",
       vitals:{airway:"Hindi pa ma-assess (may live wire)", breathing:"Hindi makita mula sa baba", pulse:"Unknown", bp:"Unknown", spo2:"--", conscious:"Unresponsive sa bubong", wound:"May nakalaylay na live wire malapit sa katawan"},
       q1:"SCENE SAFETY: Nakikita mong nakalaylay pa ang live electrical wire malapit sa biktima. Ano ang PINAKAUNANG hakbang?",
-      q1Opts:["A. Umakyat agad at hilahin ang biktima palayo sa wire","B. HUWAG lumapit o humawak! I-secure ang area (keep bystanders back), tumawag sa electric cooperative (CANORECO) para i-cut ang power, at gumamit lang ng non-conductive rescue tool kung trained at safe","C. Buhusan ng tubig ang wire para mamatay ang kuryente","D. Gumamit ng bakal na tubo para itulak ang wire"],
+      q1Opts:[
+        "A. Umakyat agad sa bubong at hilahin ang biktima palayo sa wire bago pa lumala ang kuryente",
+        "B. Huwag lumapit o humawak—i-secure ang lugar, ipatay ang power sa electric cooperative, at gumamit ng safe tool",
+        "C. Buhusan ng tubig ang wire mula sa baba upang maputol o humina ang daloy ng kuryente",
+        "D. Gumamit ng metal rod upang itulak palayo ang wire mula sa katawan ng biktima nang mabilis"
+      ],
       q1Ans:1, q1Explain:"TAMA! Scene safety first! Ang kuryente ay tumatalon at dumadaloy—huwag lalapit hangga't hindi sigurado na patay na ang power supply!",
       q2:"ASSESSMENT: Ligtas na at napatay na ang kuryente. Nakita mong may entry burn sa kamay at exit burn sa paa, at walang pulso. Ano ang priority?",
-      q2Opts:["A. Gamutin muna ang maliit na burn sa kamay at paa","B. Simulan agad ang CPR at i-apply ang AED, habang pinapanatili ang C-spine precautions (dahil bumagsak sya)","C. Lagyan ng ointment ang exit wound","D. Painumin ng tubig"],
+      q2Opts:[
+        "A. Gamutin at takpan muna ang mga burn sa kamay at paa bago simulan ang pag-assess sa pulso",
+        "B. Simulan agad ang CPR at ikabit ang AED habang pinapanatili ang C-spine precautions dahil sa pagbagsak",
+        "C. Pahiran ng burn ointment ang exit wound sa paa upang hindi mairita ang balat habang tinitingnan",
+        "D. Painumin ng tubig ang pasyente upang mapawi ang init sa loob ng katawan matapos makuryente"
+      ],
       q2Ans:1, q2Explain:"TAMA! Ang kuryente ay nagdudulot ng ventricular fibrillation (cardiac arrest) at malalim na internal burn kahit maliit lang ang sugat sa labas!",
       q3:"TRANSPORT: Bumalik ang pulso pagkatapos ng CPR/AED. Bakit kailangan pa rin ng continuous ECG/cardiac monitoring sa ospital?",
-      q3Opts:["A. Hindi na kailangan, gising na eh","B. Dahil pwedeng bumalik ang fatal arrhythmias at may internal muscle/kidney damage (rhabdomyolysis) mula sa kuryente","C. Para lang makapagpahinga","D. Dahil lang sa galos sa kamay"],
+      q3Opts:[
+        "A. Hindi na gaanong kailangan kapag bumalik na ang pulso at nagsimula nang huminga nang kusa",
+        "B. Dahil pwedeng bumalik ang fatal arrhythmias at may internal muscle o organ damage mula sa kuryente",
+        "C. Para lang makapagpahinga nang tahimik ang pasyente sa loob ng ambulansya bago umuwi",
+        "D. Dahil lang sa maliit na paso sa kamay at paa na nangangailangan ng pagpapalit ng gasa"
+      ],
       q3Ans:1, q3Explain:"TAMA! High-voltage electrocution causes delayed arrhythmias and deep tissue/muscle breakdown."
     },
     {
@@ -593,13 +881,28 @@ var cases = [
       story:"Baha sa loob ng bahay at nadikit yung pamangkin ko sa nakalubog na extension cord! Natumba sya sa tubig pero nahugot na namin sa saksakan yung cord!",
       vitals:{airway:"Bukas", breathing:"22/min - Mabilis", pulse:"126 - Irregular", bp:"115/75", spo2:"95%", conscious:"GCS 14 - Tulala, nanginginig", wound:"Electric burn sa kanang kamay, basa ang katawan"},
       q1:"VERIFICATION: Sabi ng pamilya nahugot na raw ang saksakan. Ano ang dapat mong gawin bago lumusong sa baha?",
-      q1Opts:["A. Lumusong agad nang nakatsinelas","B. I-verify mismo na nakapatay ang main circuit breaker ng bahay bago lumusong sa tubig, at ilipat agad ang pasyente sa tuyong lugar","C. Hawakan ang bakal na pinto habang nakatapak sa tubig","D. Ibabad muna sa tubig ang pasyente"],
+      q1Opts:[
+        "A. Lumusong agad nang naka-boots o tsinelas dahil sinabi na ng pamilya na nahugot na ang cord",
+        "B. I-verify mismo na nakapatay ang main breaker bago lumusong sa baha, at ilipat sa tuyong lugar",
+        "C. Hawakan ang bakal na hamba ng pinto habang nakatapak sa baha upang mapanatag ang paghakbang",
+        "D. Ibabad muna sa tubig ang pasyente upang maalis ang anumang natitirang kinitinginit sa balat"
+      ],
       q1Ans:1, q1Explain:"TAMA! Never trust verbal assurance alone sa baha—verify main breaker off before stepping into water!",
       q2:"CARDIAC CHECK: Gising ang pasyente pero irregular ang pulso (126/min) at naninikip ang dibdib. Ano ang nangyayari?",
-      q2Opts:["A. Takot lang sa tubig","B. Electrical-induced cardiac arrhythmia — bigyan ng oxygen, patuyuin ang katawan, ikabit ang cardiac monitor/AED pads on standby, at i-transport nang nakahiga","C. Pulikat lang sa kamay","D. Sipon lang dahil nabasa"],
+      q2Opts:[
+        "A. Takot at pagkagulat lang dahil sa baha at pagkadulas sa loob ng bahay kaya mabilis ang tibok",
+        "B. Posibleng electrical cardiac arrhythmia—bigyan ng oxygen, patuyuin, ihanda ang AED/monitor, at i-transport",
+        "C. Simpleng pulikat lang sa kamay at braso dahil sa lamig ng tubig-baha sa loob ng bahay",
+        "D. Mild sipon at panghihina lang dahil nabasa nang matagal ang damit at katawan ng pasyente"
+      ],
       q2Ans:1, q2Explain:"TAMA! Ang kuryente ay nakakasira ng electrical conduction ng puso. Monitor closely at i-ready ang defibrillator/AED!",
       q3:"WOUND CARE: Paano mo tatakpan ang electrical burn sa kamay?",
-      q3Opts:["A. Takpan ng dry sterile dressing, alisin ang singsing o relo bago mamaga, at i-check ang circulation/sensation sa mga daliri","B. Pahiran ng mantika","C. Balutan ng basang basahan","D. Putukin ang paltos"],
+      q3Opts:[
+        "A. Takpan ng dry sterile dressing, alisin ang singsing o relo bago mamaga, at i-check ang circulation/sensation",
+        "B. Pahiran ng mantika o cooking oil ang paso sa kamay upang hindi matuyo ang balat",
+        "C. Balutan nang basang basahan upang manatiling malamig ang bahaging may electric burn",
+        "D. Putukin ang maliliit na paltos sa kamay upang mailabas ang likido at mabawasan ang kirot"
+      ],
       q3Ans:0, q3Explain:"TAMA! Dry sterile dressing + remove jewelry early + neurovascular check."
     },
     {
@@ -608,13 +911,28 @@ var cases = [
       story:"May dalawang magsasaka na tinamaan ng kidlat sa ilalim ng puno! Yung isa sumisigaw sa sakit sa paa, yung isa nakahandusay at hindi humihinga!",
       vitals:{airway:"Patient B: Bukas", breathing:"Patient B: 0 - Apneic", pulse:"Patient B: 0 - No pulse", bp:"0", spo2:"--", conscious:"Patient B: Unresponsive | Patient A: Sumisigaw", wound:"2 victims: isa maingay/gising, isa tahimik/walang pulso"},
       q1:"REVERSE TRIAGE: Dalawa ang biktima ng kidlat — si Patient A ay sumisigaw, si Patient B ay hindi humihinga at walang pulso. Sino ang UUNAHIN mo?",
-      q1Opts:["A. Si Patient A kasi sya ang sumisigaw at humihingi ng tulong","B. Si Patient B (ang hindi humihinga at walang pulso) — sa lightning strike, 'Reverse Triage' ang rule: unahin ang mukhang patay dahil mataas ang chance nilang mabuhay kapag na-CPR agad!","C. Hintayin tumila ang ulan bago lumapit kahit nasa ligtas na silungan na","D. Iwanan na si Patient B dahil patay na raw"],
+      q1Opts:[
+        "A. Unahin si Patient A dahil siya ang gising, sumisigaw, at humihingi ng tulong para sa masakit na paa",
+        "B. Unahin si Patient B—sa lightning strike, 'Reverse Triage' ang rule dahil mataas ang survival sa agarang CPR",
+        "C. Maghintay muna sa loob ng sasakyan hanggang tumila nang tuluyan ang ulan bago lumapit kaninuman",
+        "D. Iwanan muna si Patient B dahil wala nang pulso at hinga kumpara kay Patient A na gising pa"
+      ],
       q1Ans:1, q1Explain:"TAMA! Reverse Triage sa lightning strike! Ang mga biktima ng kidlat ay walang natitirang kuryente sa katawan at madalas nagkakaroon ng respiratory/cardiac arrest na reversible sa immediate CPR!",
       q2:"SAFETY: Ligtas bang hawakan ang taong tinamaan ng kidlat?",
-      q2Opts:["A. Hindi, may kuryente pa sa katawan nya nang 1 oras","B. Oo, ligtas hawakan ang pasyente dahil hindi nag-iimbak ng kuryente ang katawan, pero ilipat agad sa ligtas na lugar para hindi tamaan ng kasunod na kidlat","C. Kailangan munang ibaon sa lupa","D. Buhusan muna ng asin"],
+      q2Opts:[
+        "A. Hindi pa ligtas hawakan nang matagal dahil may naiipong kuryente ang katawan pagkatapos tamaan",
+        "B. Oo, ligtas hawakan dahil hindi nag-iimbak ng kuryente ang katawan, pero ilipat sa ligtas na lugar",
+        "C. Kailangan munang ibaon nang bahagya sa lupa upang mailabas ang kuryente bago simulan ang tulong",
+        "D. Buhusan muna ng tubig na may asin upang ma-ground ang katawan bago lapitan at i-assess"
+      ],
       q2Ans:1, q2Explain:"TAMA! Victims do not carry an electrical charge—safe to touch immediately, just move to shelter!",
       q3:"INTERVENTION: Habang nag-CPR ka kay Patient B, bumalik ang pulso nya pero hindi pa rin sya humihinga nang kusa (respiratory arrest). Ano gagawin mo?",
-      q3Opts:["A. Itigil na lahat ng tulong","B. Ipagpatuloy ang rescue breathing / BVM ventilation (1 breath every 5–6 seconds) at i-check ang pulso bawat 2 minuto habang ibinibiyahe","C. Paupuin na sya","D. Tanggalin ang BVM"],
+      q3Opts:[
+        "A. Ihinto na ang lahat ng tulong dahil bumalik naman na ang pulso sa leeg ng pasyente",
+        "B. Ipagpatuloy ang rescue breaths o BVM ventilation at i-check ang pulso bawat 2 mins habang ibinibiyahe",
+        "C. Paupuin na ang pasyente sa stretcher dahil may pulso na at maaaring kusang bumalik ang paghinga",
+        "D. Tanggalin ang BVM mask upang masuri kung babalik nang mag-isa ang paghinga sa loob ng 1 minuto"
+      ],
       q3Ans:1, q3Explain:"TAMA! Sa lightning strike, mas matagal bumalik ang respiratory center ng utak kaysa sa pulso—tuloy ang rescue breaths!"
     }
   ]
@@ -630,13 +948,28 @@ var cases = [
       story:"Yung tatay ko 62 years old, biglang nabitawan yung tasa ng kape! Tabingi yung kalahati ng mukha nya, bulol magsalita, at hindi maitaas yung kanang braso!",
       vitals:{airway:"Bukas pero bulol", breathing:"18/min", pulse:"88", bp:"185/105 - MATAAS", spo2:"96%", conscious:"GCS 14 - Gising pero slurred speech", wound:"Left facial droop, right arm weakness, slurred speech (FAST positive)"},
       q1:"ASSESSMENT: Facial droop + arm drift + slurred speech. Ano ang PINAKA-IMPORTANTENG tanong mo sa pamilya?",
-      q1Opts:["A. Ano ang kinain nya kagabi?","B. 'Anong eksaktong oras sya huling nakitang normal (Last Known Well)?' — dahil kritikal ang time window para sa clot-busting drug (thrombolysis) sa ospital!","C. May PhilHealth card ba sya?","D. Nakainom na ba sya ng kape?"],
+      q1Opts:[
+        "A. Itanong kung ano ang huling kinain o ininom ng pasyente bago siya mabitawan ang tasa",
+        "B. Itanong ang Last Known Well time—kritikal ito para sa time window ng treatment sa ospital",
+        "C. Itanong kung may nakahanda nang health insurance o ID para hindi maantala ang pagpasok sa ER",
+        "D. Itanong kung nakainom na ng maintenance meds sa umaga upang malaman kung nakaligtaan ito"
+      ],
       q1Ans:1, q1Explain:"TAMA! 'Time is Brain!' Ang Last Known Well (LKW) time ang basehan ng ospital kung abot pa sa thrombolytic therapy window.",
       q2:"BP MANAGEMENT: Mataas ang BP nya (185/105). Dapat mo bang pababain agad ang BP nya sa field?",
-      q2Opts:["A. Oo, bigyan ng gamot sa high blood para bumaba agad sa 120/80","B. HINDI! Sa stroke, pinapataas ng katawan ang BP para makarating ang dugo sa utak (cerebral perfusion). Huwag pababain ang BP sa field maliban kung may specific medical direction","C. Pahigain nang nakatiwarik","D. Painumin ng katas ng bawang"],
+      q2Opts:[
+        "A. Oo, bigyan ng pampababa ng BP upang mabilis bumalik sa normal na range ang kanyang blood pressure",
+        "B. Hindi—huwag pababain ang BP sa field maliban kung may order dahil kailangan ito ng utak",
+        "C. Pahigain nang nakababa ang ulo upang mabawasan ang pressure ng dugo sa bahaging sumasakit",
+        "D. Painumin ng maligamgam na tubig o herbal tea upang dahan-dahang humupa ang taas ng BP"
+      ],
       q2Ans:1, q2Explain:"TAMA! Ang biglang pagpapababa ng BP sa stroke ay lalong nakakasira sa utak dahil nawawalan ng blood flow ang penumbra!",
       q3:"AIRWAY & POSITION: Bulol magsalita at hirap lumunok ang pasyente. Paano ang posisyon at feeding?",
-      q3Opts:["A. Painumin ng tubig para luminaw ang pagsasalita","B. NPO (walang ipapainom o ipapakain dahil mataas ang aspiration risk!), i-elevate ang ulo nang 30 degrees, i-check ang blood glucose kung may glucometer (to rule out hypoglycemia), at rapid transport","C. Pahigain nang flat nang walang unan","D. Painumin ng aspirin agad"],
+      q3Opts:[
+        "A. Painumin nang kaunting tubig upang luminaw ang pagsasalita at mabasa ang lalamunan",
+        "B. Panatilihing NPO, i-elevate ang ulo nang 30°, i-check ang blood sugar kung may glucometer, at rapid transport",
+        "C. Pahigain nang flat nang walang unan upang manatiling pantay ang posisyon ng ulo at katawan",
+        "D. Bigyan agad ng aspirin upang matunaw kung may namumuong bara sa ugat ng utak"
+      ],
       q3Ans:1, q3Explain:"TAMA! Strict NPO (choking/aspiration risk), head elevated 30°, check blood sugar (hypoglycemia mimics stroke!), and never give aspirin in field because it could be hemorrhagic stroke!"
     },
     {
@@ -645,13 +978,28 @@ var cases = [
       story:"Biglang sumigaw yung nanay ko na parang pinupukpok ng martilyo yung ulo nya — 'worst headache of my life' daw! Tapos nagsuka sya at biglang bumagsak at humihilik nang malalim!",
       vitals:{airway:"May snoring sound (partial obstruction)", breathing:"12/min - Mabagal, malalim", pulse:"56 - Mabagal", bp:"210/115 - NAPAKATAAS", spo2:"90%", conscious:"GCS 8 - Unresponsive sa boses, nagre-respond lang sa pain", wound:"Suspected hemorrhagic stroke, snoring respirations"},
       q1:"AIRWAY: GCS 8 at may malakas na hilik (snoring respirations). Ano ang ibig sabihin ng snoring sound?",
-      q1Opts:["A. Mahimbing lang ang tulog nya","B. Bahagyang barado ang airway ng kanyang dila dahil sa pagbaba ng consciousness! I-position nang maayos, maglagay ng Nasopharyngeal/Oropharyngeal airway (kung walang gag reflex), i-suction kung kailangan, at magbigay ng oxygen","C. Normal lang sa matanda","D. Sinisipon lang"],
+      q1Opts:[
+        "A. Mahimbing at malalim lang ang tulog ng pasyente matapos ang matinding sakit ng ulo at pagsusuka",
+        "B. Bahagyang barado ang airway ng dila—i-position, maglagay ng airway adjunct kung angkop, i-suction, at mag-O2",
+        "C. Karaniwang tunog lang kapag pagod ang matanda at hindi nakakaapekto sa daloy ng hangin",
+        "D. Senyales ng simpleng sipon o baradong ilong na kusang mawawala kapag na-elevate ang paa"
+      ],
       q1Ans:1, q1Explain:"TAMA! Snoring = tongue obstructing the airway! At GCS ≤8 ay nangangailangan ng active airway protection.",
       q2:"DIFFERENTIAL: Bakit bawal na bawal bigyan ng Aspirin ang pasyenteng ito?",
-      q2Opts:["A. Dahil kung hemorrhagic stroke (pumutok na ugat sa utak) ito, lalong lalala ang pagdurugo sa loob ng bungo","B. Dahil mapait ang aspirin","C. Dahil nakakaantok ang aspirin","D. Dahil tataas ang lagnat"],
+      q2Opts:[
+        "A. Dahil kung hemorrhagic stroke ito, maaaring lalong lumala ang pagdurugo sa loob ng bungo",
+        "B. Dahil mapait ang lasa ng aspirin at madaling maisuka kapag nanghihina na ang pasyente",
+        "C. Dahil nakakaantok ang aspirin at maaaring magpababa pa sa antas ng kanyang kamalayan",
+        "D. Dahil maaari nitong pataasin ang lagnat at bilis ng tibok ng puso habang nasa biyahe"
+      ],
       q2Ans:0, q2Explain:"TAMA! Hindi malalaman sa field kung ischemic (bara) o hemorrhagic (putok na ugat) ang stroke nang walang CT scan—kaya BAWAL ang aspirin sa field!",
       q3:"TRANSPORT: Anong ospital ang pinakamainam pagdalhan?",
-      q3Opts:["A. Pinakamalapit na lying-in clinic","B. Stroke-ready hospital na may CT scan at ICU/neurosurgical capability, at mag-pre-alert habang nasa biyahe","C. Sa bahay na lang magpahinga","D. Sa dental clinic"],
+      q3Opts:[
+        "A. Sa pinakamalapit na lying-in clinic upang masuri muna ang BP at mabigyan ng paunang lunas",
+        "B. Sa stroke-ready hospital na may CT scan at neuro/ICU care, at mag-pre-alert habang nasa biyahe",
+        "C. Sa bahay na lang ipahinga nang naka-elevate ang ulo kung hindi na muling nagsusuka",
+        "D. Sa pinakamalapit na clinic na may general practitioner upang mabigyan ng reseta bago mag-CT scan"
+      ],
       q3Ans:1, q3Explain:"TAMA! Pre-notification sa stroke-capable hospital ay nakakatipid ng kritikal na minuto pagdating sa ER."
     },
     {
@@ -660,13 +1008,28 @@ var cases = [
       story:"Yung lolo ko diabetic, nag-inject ng insulin kanina pero hindi kumain! Ngayon nanghihina ang kaliwang bahagi ng katawan, bulol, at pinagpapawisan!",
       vitals:{airway:"Bukas", breathing:"20/min", pulse:"114 - Mabilis", bp:"130/80", spo2:"97%", conscious:"GCS 13 - Confused, slurred speech", wound:"Diabetic on insulin, skipped meal, cold sweat, stroke-like symptoms"},
       q1:"ASSESSMENT: Diabetic na nag-insulin nang hindi kumain + stroke-like symptoms + malamig na pawis. Ano ang dapat mong gawin?",
-      q1Opts:["A. I-assume na stroke lang at huwag nang i-check ang blood sugar","B. Mag-check agad ng Capillary Blood Glucose (CBG/glucometer) — ang severe hypoglycemia ay pwedeng mag-mimic ng stroke signs!","C. Mag-inject ulit ng insulin","D. Painumin ng diet soda"],
+      q1Opts:[
+        "A. I-assume na agad na stroke ito at huwag nang mag-check ng blood sugar upang makatipid sa oras",
+        "B. Mag-check agad ng blood glucose—ang severe hypoglycemia ay pwedeng mag-mimic ng stroke signs",
+        "C. Mag-inject ulit ng kaunting insulin upang mapanatiling kontrolado ang blood sugar habang papunta sa ER",
+        "D. Painumin muna ng sugar-free drink upang mahimasmasan ang pagkalito nang hindi tumataas ang sugar"
+      ],
       q1Ans:1, q1Explain:"TAMA! Hypoglycemia ay ang #1 stroke mimic! Laging i-check ang blood sugar sa lahat ng suspected stroke patients.",
       q2:"INTERVENTION: Lumabas sa glucometer na 38 mg/dL (Severe Hypoglycemia). Gising pa sya at nakakalunok nang maayos. Ano ang ibibigay mo?",
-      q2Opts:["A. Oral glucose gel / matamis na inumin (tulad ng juice o tubig na may asukal) habang gising at intact ang gag reflex, at i-recheck ang CBG pagkatapos ng 15 minuto","B. Pilitin pakainin ng matigas na tinapay kahit hirap lumunok","C. Bigyan ng black coffee na walang asukal","D. Wala, hintayin na lang sa ospital"],
-      q2Ans:0, q2Explain:"TAMA! Kung gising at nakakalunok nang ligtas, magbigay ng fast-acting oral glucose (Rule of 15) at i-monitor!",
+      q2Opts:[
+        "A. Pilitin pakainin ng matigas na tinapay kahit bahagyang bulol at mabagal ang paglunok",
+        "B. Magbigay ng oral glucose o matamis na inumin habang gising at intact ang gag reflex, at i-recheck pagkatapos ng 15 mins",
+        "C. Bigyan ng mainit na black coffee nang walang asukal upang magising at luminaw ang isip",
+        "D. Huwag nang bigyan ng anumang matamis sa field at hintayin na lang ang IV dextrose sa ospital"
+      ],
+      q2Ans:1, q2Explain:"TAMA! Kung gising at nakakalunok nang ligtas, magbigay ng fast-acting oral glucose (Rule of 15) at i-monitor!",
       q3:"FOLLOW-UP: Pagkatapos ng 15 minuto, umangat ang CBG sa 95 mg/dL at bumalik na sa normal ang pagsasalita at lakas ng braso! Ano ang susunod?",
-      q3Opts:["A. Iwanan na nang hindi nagpapakain","B. Bigyan ng complex carbohydrate/pagkain kung fully alert na, at i-advise/dalhin pa rin sa doktor para ma-adjust ang insulin dose nya","C. Mag-inject ulit ng insulin","D. Patakbuhin sa labas"],
+      q3Opts:[
+        "A. Iwanan na sa bahay nang hindi nagpapakain dahil bumalik na sa normal ang pagsasalita at lakas",
+        "B. Bigyan ng complex meal kung alert na, at i-advise o dalhin pa rin sa doktor para sa insulin adjustment",
+        "C. Mag-inject ulit ng insulin upang hindi tumaas ang blood sugar matapos uminom ng matamis",
+        "D. Palakarin agad sa labas upang masuri kung tuluyan nang nawala ang panghihina sa kaliwang bahagi"
+      ],
       q3Ans:1, q3Explain:"TAMA! Ang complex meal ay pumipigil sa pagbagsak ulit ng sugar pagkatapos ng fast-acting glucose."
     }
   ]
@@ -682,13 +1045,28 @@ var cases = [
       story:"Nataga ng itak sa braso yung nagtatabas ng damo! Sumisirit yung pulang-pulang dugo at basang-basa na ang damit nya!",
       vitals:{airway:"Bukas, sumisigaw", breathing:"26/min - Mabilis", pulse:"128 - Mabilis, mahina", bp:"92/60 - Bumababa", spo2:"94%", conscious:"GCS 15 - Namumutla, kinakabahan", wound:"Deep laceration sa kaliwang braso, bright red pulsating arterial bleeding"},
       q1:"BLEEDING CONTROL: Sumisirit ang bright red blood sa braso. Ano ang PINAKAUNANG hakbang?",
-      q1Opts:["A. Hugasan muna ng sabon at tubig nang 10 minuto","B. Magsuot ng gloves, lagyan agad ng sterile gauze/malinis na tela at mag-apply ng FIRM DIRECT PRESSURE nang direkta sa sugat","C. Maglagay agad ng tourniquet sa leeg","D. Itaas lang ang braso nang hindi dinidiinan ang sugat"],
+      q1Opts:[
+        "A. Hugasan muna nang matagal gamit ang tubig at sabon upang malinis ang sugat bago takpan ng gasa",
+        "B. Magsuot ng gloves, lagyan agad ng sterile dressing, at mag-apply ng firm direct pressure sa sugat",
+        "C. Maglagay agad ng tourniquet sa leeg upang mabawasan ang daloy ng dugo patungo sa ulo at braso",
+        "D. Itaas lang ang braso nang hindi dinidiinan ang sugat upang tingnan kung hihina ang pag-agos ng dugo"
+      ],
       q1Ans:1, q1Explain:"TAMA! Direct pressure with a sterile dressing ang unang hakbang sa pagkontrol ng external bleeding!",
       q2:"ESCALATION: Tumagos na sa unang gauze ang dugo at patuloy pa rin ang malakas na pagdurugo kahit may direct pressure. Ano ang tama?",
-      q2Opts:["A. Tanggalin ang unang gauze para tingnan ang sugat tapos maglagay ng bago","B. HUWAG tanggalin ang unang gauze (para hindi masira ang nabubuong clot)! Magpatong ng bagong gauze sa ibabaw at mas idiin, o mag-apply ng tourniquet 2–3 inches sa itaas ng sugat (not over a joint) kung life-threatening extremity bleed","C. Buhusan ng alcohol ang sugat","D. Lagyan ng yelo sa loob ng hiwa"],
+      q2Opts:[
+        "A. Tanggalin ang unang gauze upang makita ang sugat nang malinaw bago maglagay ng bagong piraso",
+        "B. Huwag tanggalin ang unang gauze—magpatong ng bago at mas idiin, o mag-tourniquet kung life-threatening",
+        "C. Buhusan nang maraming alcohol ang sugat upang mabilis mamuo ang dugo at mapigil ang pagsirit",
+        "D. Maglagay ng yelo sa loob ng hiwa upang manigas ang dugo at mapigilan ang paglabas nito"
+      ],
       q2Ans:1, q2Explain:"TAMA! Never remove blood-soaked gauze—add more on top! At sa life-threatening limb hemorrhage na hindi tumitigil sa direct pressure, gumamit ng tourniquet 2–3 inches proximal to the wound.",
       q3:"TOURNIQUET RULE: Naglagay ka ng tourniquet at tumigil na ang pagdurugo. Ano ang CRITICAL na dapat mong gawin pagkatapos?",
-      q3Opts:["A. Luwagan ito bawat 5 minuto para dumaloy ang dugo","B. Isulat ang eksaktong ORAS (Time applied) sa tourniquet o noo ng pasyente, HUWAG nang luwagan o tanggalin sa field, at i-transport agad sa ospital","C. Takpan ng kumot para hindi makita ng doktor","D. Alisin pagdating sa ambulansya"],
+      q3Opts:[
+        "A. Luwagan ito bawat 5 minuto upang dumaloy ang dugo sa braso at maiwasan ang pamamanhid",
+        "B. Isulat ang oras na naikabit ang tourniquet, huwag nang luwagan o tanggalin sa field, at dalhin agad",
+        "C. Takpan ng kumot upang hindi makita ng mga nakikiusyoso habang inihahanda ang paglipat sa stretcher",
+        "D. Alisin pagdating sa ambulansya kung mukhang huminto na ang pagdurugo sa ibabang bahagi ng braso"
+      ],
       q3Ans:1, q3Explain:"TAMA! Kapag naikabit na ang tourniquet at tumigil ang arterial bleed, isulat ang oras at HUWAG nang tatanggalin hanggang sa ospital!"
     },
     {
@@ -697,13 +1075,28 @@ var cases = [
       story:"Yung lolo ko 70 years old, umiinom ng blood thinner (warfarin/aspirin), 40 minutes nang nagdudugo ang ilong at parang nalulunok na nya yung dugo!",
       vitals:{airway:"May dugo sa lalamunan, umuubo", breathing:"22/min", pulse:"112", bp:"165/95", spo2:"95%", conscious:"GCS 15 - Gising, dumudura ng dugo", wound:"Profuse anterior/posterior epistaxis, on blood thinners"},
       q1:"POSITIONING: Nagdudugo ang ilong nang malakas. Ano ang TAMANG posisyon ng pasyente?",
-      q1Opts:["A. Nakatingala nang todo para hindi tumulo ang dugo sa damit","B. Paupuin nang nakayuko nang bahagya paharap (leaning forward) para lumabas ang dugo sa bibig at hindi malunok o ma-aspirate sa baga!","C. Pahigain nang flat nang nakatihaya","D. Pahigain nang nakatiwarik"],
+      q1Opts:[
+        "A. Iangat ang ulo at tumingala nang bahagya upang hindi tumulo ang dugo sa damit at sahig",
+        "B. Paupuin nang nakayuko nang bahagya paharap upang lumabas ang dugo at hindi malunok o ma-aspirate",
+        "C. Pahigain nang flat nang nakatihaya upang maging pantay ang daloy ng dugo sa ulo at dibdib",
+        "D. Pahigain nang nakababa ang ulo upang mas madaling umagos palabas ang dugo mula sa butas ng ilong"
+      ],
       q1Ans:1, q1Explain:"TAMA! Leaning forward! Ang pagtingala ay nagpapalunok ng dugo (nagdudulot ng pagsusuka) o nakakabara sa airway.",
       q2:"DIRECT PRESSURE: Paano ang tamang pagpisil sa ilong para tumigil ang nosebleed?",
-      q2Opts:["A. Pisilin ang matigas na buto sa itaas ng ilong (nasal bridge) nang 10 seconds","B. Pisilin nang tuloy-tuloy ang malambot na bahagi ng ilong (soft cartilaginous part) nang 10–15 minuto habang humihinga sa bibig","C. Pasukan ng matigas na papel ang butas ng ilong","D. Ipasinghot nang malakas"],
+      q2Opts:[
+        "A. Pisilin ang matigas na buto sa itaas ng ilong nang 10 segundo at tingnan kung tumigil na ang tulo",
+        "B. Pisilin nang tuloy-tuloy ang malambot na bahagi ng ilong nang 10–15 mins habang sa bibig humihinga",
+        "C. Pasukan ng matigas na papel ang butas ng ilong upang harangan ang paglabas ng dugo sa harap",
+        "D. Ipasinghot nang malakas upang mahigop pabalik ang dugo at mabawasan ang pamumuo sa ilong"
+      ],
       q2Ans:1, q2Explain:"TAMA! Pisilin ang soft part ng ilong (nostrils) nang tuloy-tuloy sa loob ng 10–15 minutes nang hindi sinisilip!",
       q3:"TRANSPORT: Pagkatapos ng 15 mins, may tumutulo pa rin sa likod ng lalamunan dahil umiinom sya ng blood thinner. Ano ang desisyon?",
-      q3Opts:["A. Pauwiin na at patulugin","B. Dalhin agad sa ospital dahil ang posterior nosebleed + blood thinners ay nangangailangan ng nasal packing/cautery ng doktor, at magdala ng kidney basin para madura ang dugo","C. Painumin ng maraming kape","D. Pahigain nang flat"],
+      q3Opts:[
+        "A. Pauwiin na at patulugin sa kwarto dahil humina naman ang daloy kumpara sa unang 40 minuto",
+        "B. Dalhin agad sa ospital dahil may blood thinner at patuloy ang dugo, at magdala ng lalagyan para sa dura",
+        "C. Painumin ng mainit na inumin upang mahimasmasan ang lalamunan bago magpasya kung kailangan sa ER",
+        "D. Pahigain nang flat nang may unan sa likod upang hindi mapagod habang naghihintay sa bahay"
+      ],
       q3Ans:1, q3Explain:"TAMA! Elderly on anticoagulants with persistent epistaxis ay high risk sa airway compromise at significant blood loss."
     },
     {
@@ -712,13 +1105,28 @@ var cases = [
       story:"Nasipa ng kalabaw sa tiyan yung binatilyo! Walang sugat sa labas pero namimilipit sa sakit, matigas ang tiyan, at namumutla na!",
       vitals:{airway:"Bukas", breathing:"28/min - Mabilis, mababaw", pulse:"132 - Mabilis, thready", bp:"86/54 - MABABA", spo2:"93%", conscious:"GCS 14 - Restless, pale, cold clammy skin", wound:"Walang external bleeding, pero may pasa (ecchymosis) at rigid/tender abdomen"},
       q1:"ASSESSMENT: Walang dugo sa labas pero matigas ang tiyan, namumutla, pulse 132, BP 86/54. Ano ang nangyayari?",
-      q1Opts:["A. Kabag lang yan dahil nasipa","B. Severe Internal Bleeding (intra-abdominal hemorrhage) at Decompensated Shock — kailangan ng agarang 'load and go' rapid transport sa surgical hospital!","C. Muscle cramps lang sa tiyan","D. Gutom lang kaya namumutla"],
+      q1Opts:[
+        "A. Simpleng kabag o pananakit ng tiyan lang dahil sa biglaang pagkakasipa at hindi naman dumudugo sa labas",
+        "B. Posibleng matinding internal bleeding at decompensated shock—kailangan ng mabilis na transport sa surgical ER",
+        "C. Pulikat o paninigas lang ng kalamnan sa tiyan mula sa pagsipa kaya hindi makahinga nang malalim",
+        "D. Panghihina at pagkaputla lang dahil sa pagkabigla at kaba matapos masipa ng kalabaw sa bukid"
+      ],
       q1Ans:1, q1Explain:"TAMA! Ang tiyan ay pwedeng magtago ng napakaraming dugo nang walang sugat sa labas. Rigid abdomen + hypotension + tachycardia = internal hemorrhage!",
       q2:"INTERVENTION: Ano ang tamang gawin habang nasa biyahe?",
-      q2Opts:["A. Painumin ng maligamgam na tubig para mawala ang sakit ng tiyan","B. NPO (bawal uminom o kumain dahil ooperahan sya!), ihiga nang flat (supine), bigyan ng high-flow oxygen, panatilihing mainit (blanket), at i-monitor ang vitals bawat 5 minuto","C. Diinan nang malakas ang tiyan para lumambot","D. Paupuin nang mataas"],
+      q2Opts:[
+        "A. Painumin ng maligamgam na tubig upang maibsan ang kirot sa tiyan habang nasa biyahe papunta sa ospital",
+        "B. Panatilihing NPO, ihiga nang flat, magbigay ng high-flow oxygen at kumot, at i-monitor vitals bawat 5 mins",
+        "C. Idiin nang bahagya ang matigas na tiyan upang masuri kung lumalambot na bago dumating sa ospital",
+        "D. Paupuin nang mataas ang likod upang mabawasan ang bigat at paninikip sa bahagi ng tiyan"
+      ],
       q2Ans:1, q2Explain:"TAMA! Strict NPO (for emergency surgery), high-flow O2, warmth (prevent lethal triad hypothermia), and rapid transport!",
       q3:"SIGNIFICANCE: Bakit delikado ang lamig (hypothermia) sa pasyenteng may internal bleeding?",
-      q3Opts:["A. Dahil pinipigilan ng lamig ang pamumuo ng dugo (coagulopathy) at lalong pinapalala ang pagdurugo","B. Dahil sisipunin lang sya","C. Dahil tatamarin ang pasyente","D. Walang epekto ang lamig sa bleeding"],
+      q3Opts:[
+        "A. Dahil pinipigilan ng lamig ang pamumuo ng dugo at lalong pinalalala ang pagdurugo sa loob",
+        "B. Dahil madaling sipunin o ginawin ang pasyente kapag hindi naka-kumot sa loob ng ambulansya",
+        "C. Dahil nagiging matamlay at ayaw gumalaw ang pasyente kapag malamig ang paligid sa biyahe",
+        "D. Dahil walang direktang epekto ang lamig sa pagdurugo basta nabibigyan ng oxygen ang pasyente"
+      ],
       q3Ans:0, q3Explain:"TAMA! Hypothermia + Acidosis + Coagulopathy ang 'Trauma Triad of Death'—kaya napakahalaga ng pagpapanatili ng init ng katawan!"
     }
   ]
